@@ -1,4 +1,4 @@
-
+```html
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -7,9 +7,8 @@
   <meta name="theme-color" content="#0a0a0f">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="StreamVault - Ultimate Streaming Web Application">
   <title>StreamVault</title>
-  <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU3RyZWFtVmF1bHQiLCJzaG9ydF9uYW1lIjoiU3RyZWFtVmF1bHQiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwYTBhMGYiLCJ0aGVtZV9jb2xvciI6IiNlNTA5MTQiLCJpY29ucyI6W3sic3JjIjoiZGF0YTppbWFnZS9zdmcreG1sLCUzQ3N2ZyB4bWxucz0naHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmcnIHZpZXdCb3g9JzAgMCAxOTIgMTkyJyUzRSUzQ3JlY3QgZmlsbD0nJTIzMGUwZTBmJyB3aWR0aD0nMTkyJyBoZWlnaHQ9JzE5MicvJTNFJTNDdGV4dCB4PSc5NicgeT0nMTIwJyB0ZXh0LWFuY2hvcj0nbWlkZGxlJyBmaWxsPSclMjNlNTA5MTQnIGZvbnQtc2l6ZT0nNDgnIGZvbnQtZmFtaWx5PSdQb3BwaW5zJyBmb250LXdlaWdodD0nODAwJyUzRVNWJTNFL3RleHQlM0UlM0Mvc3ZnJTNFIiwic2l6ZXMiOiIxOTJ4MTkyIiwidHlwZSI6ImltYWdlL3N2Zyt4bWwifV19">
+  <link rel="manifest" href="data:application/json;base64,eyJuYW1lIjoiU3RyZWFtVmF1bHQiLCJzaG9ydF9uYW1lIjoiU3RyZWFtVmF1bHQiLCJzdGFydF91cmwiOiIuLyIsImRpc3BsYXkiOiJzdGFuZGFsb25lIiwiYmFja2dyb3VuZF9jb2xvciI6IiMwYTBhMGYiLCJ0aGVtZV9jb2xvciI6IiNlNTA5MTQifQ==">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/index.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/poppins@latest/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -285,6 +284,17 @@
     .player-page { background: #000; min-height: 100vh; }
     .player-container { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; }
     .player-container iframe { width: 100%; height: 100%; border: none; }
+    .player-error {
+      position: absolute; inset: 0; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; background: #111;
+      padding: 20px; text-align: center;
+    }
+    .player-error i { font-size: 2.5rem; color: var(--text-muted); margin-bottom: 12px; }
+    .player-error p { font-size: 0.85rem; color: var(--text-secondary); margin-bottom: 16px; }
+    .player-error button {
+      padding: 10px 20px; background: var(--accent); color: white;
+      border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem;
+    }
     .player-source-tabs { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; }
     .source-tab { flex-shrink: 0; padding: 8px 16px; border-radius: var(--radius-sm); background: var(--bg-glass); border: 1px solid var(--border-subtle); font-size: 0.8rem; font-weight: 500; transition: all 0.2s; }
     .source-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
@@ -350,7 +360,6 @@
     .settings-item-left { display: flex; align-items: center; gap: 12px; }
     .settings-item-left i { width: 20px; text-align: center; color: var(--text-muted); }
     .settings-item-label { font-size: 0.9rem; }
-    .settings-item-value { font-size: 0.85rem; color: var(--text-muted); }
     .accent-colors { display: flex; gap: 10px; padding: 8px 0; }
     .accent-dot { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; border: 2px solid transparent; transition: border-color 0.2s, transform 0.2s; }
     .accent-dot.active { border-color: white; transform: scale(1.15); }
@@ -426,7 +435,7 @@
 
     .load-more { display: flex; justify-content: center; padding: 20px; }
 
-    /* Plugin/Extension Styles */
+    /* Plugin Styles */
     .plugin-card {
       display: flex; align-items: center; gap: 12px; padding: 14px;
       background: var(--bg-card); border: 1px solid var(--border-subtle);
@@ -438,15 +447,34 @@
       background: var(--bg-glass); display: flex; align-items: center; justify-content: center;
       font-size: 1.2rem; flex-shrink: 0;
     }
-    .plugin-info { flex: 1; }
+    .plugin-info { flex: 1; min-width: 0; }
     .plugin-name { font-size: 0.9rem; font-weight: 600; margin-bottom: 2px; }
     .plugin-url { font-size: 0.7rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 200px; }
     .plugin-status { font-size: 0.7rem; padding: 3px 8px; border-radius: 10px; font-weight: 500; }
     .plugin-status.active { background: rgba(76,175,80,0.15); color: #4caf50; }
     .plugin-status.inactive { background: rgba(244,67,54,0.15); color: #f44336; }
-    .plugin-status.loading { background: rgba(255,193,7,0.15); color: #ffc107; }
-    .plugin-delete { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--text-muted); transition: color 0.2s; }
+    .plugin-delete { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--text-muted); transition: color 0.2s; flex-shrink: 0; }
     .plugin-delete:hover { color: #f44336; }
+
+    .plugin-install-card {
+      display: flex; align-items: center; gap: 12px; padding: 14px;
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md); margin-bottom: 10px;
+    }
+    .plugin-install-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
+      background: var(--accent); display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; color: white; flex-shrink: 0;
+    }
+    .plugin-install-info { flex: 1; }
+    .plugin-install-name { font-size: 0.9rem; font-weight: 600; }
+    .plugin-install-desc { font-size: 0.75rem; color: var(--text-muted); }
+    .plugin-install-btn {
+      padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.8rem;
+      font-weight: 600; flex-shrink: 0; transition: all 0.2s;
+    }
+    .plugin-install-btn.install { background: var(--accent); color: white; }
+    .plugin-install-btn.installed { background: var(--bg-glass); color: var(--text-muted); border: 1px solid var(--border-subtle); }
 
     .api-key-item {
       display: flex; align-items: center; gap: 10px; padding: 12px;
@@ -471,10 +499,28 @@
     }
     .source-provider-icon { width: 36px; height: 36px; border-radius: var(--radius-sm); background: var(--bg-glass); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
     .source-provider-name { font-size: 0.85rem; font-weight: 500; flex: 1; }
-    .source-provider-toggle { width: 40px; height: 22px; border-radius: 11px; background: var(--bg-glass); border: 1px solid var(--border-subtle); position: relative; cursor: pointer; transition: background 0.2s; }
+    .source-provider-toggle { width: 40px; height: 22px; border-radius: 11px; background: var(--bg-glass); border: 1px solid var(--border-subtle); position: relative; cursor: pointer; transition: background 0.2s; flex-shrink: 0; }
     .source-provider-toggle.active { background: var(--accent); border-color: var(--accent); }
     .source-provider-toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: white; transition: transform 0.2s; }
     .source-provider-toggle.active::after { transform: translateX(18px); }
+
+    .repo-card {
+      display: flex; align-items: center; gap: 12px; padding: 14px;
+      background: var(--bg-card); border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md); margin-bottom: 10px;
+    }
+    .repo-icon {
+      width: 44px; height: 44px; border-radius: var(--radius-sm);
+      background: linear-gradient(135deg, var(--accent), #ff6b35);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; color: white; flex-shrink: 0;
+    }
+    .repo-info { flex: 1; min-width: 0; }
+    .repo-name { font-size: 0.9rem; font-weight: 600; }
+    .repo-url { font-size: 0.7rem; color: var(--text-muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .repo-plugins { font-size: 0.7rem; color: var(--accent); margin-top: 2px; }
+    .repo-delete { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--text-muted); transition: color 0.2s; flex-shrink: 0; }
+    .repo-delete:hover { color: #f44336; }
 
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
@@ -498,7 +544,6 @@
   </div>
 
   <script>
-    // ===== CONFIGURATION =====
     const CONFIG = {
       DEFAULT_TMDB_KEY: '19809aee1bf6cf1580a3b80e83e3dc1d',
       DEFAULT_TMDB_BEARER: 'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiIxOTgwOWFlZTFiZjZjZjE1ODBhM2I4MGU4M2UzZGMxZCIsIm5iZiI6MTc5MDY4Njc1MC42MDMwMDAyLCJzdWIiOiI2YWJiYjYxZWFiMTYwMTY1ODI0M2UzMDkiLCJzY29wZXMiOlsiYXBpX3JlYWQiXSwidmVyc2lvbiI6MX0.0-5_HaWGOwVoj0c9v11_6o0AOLANbcGVl5sHw470-kM',
@@ -514,14 +559,14 @@
         10764:'Reality',10765:'Sci-Fi & Fantasy',10766:'Soap',10767:'Talk',10768:'War & Politics',10769:'Western'
       },
       DEFAULT_SOURCES: [
-        { id: 'vidsrc', name: 'VidSrc', movieUrl: 'https://vidsrc.to/embed/movie/{id}', tvUrl: 'https://vidsrc.to/embed/tv/{id}/{season}/{episode}', active: true },
+        { id: 'vidsrc', name: 'VidSrc', movieUrl: 'https://vidsrc.xyz/embed/movie/{id}', tvUrl: 'https://vidsrc.xyz/embed/tv/{id}/{season}/{episode}', active: true },
+        { id: 'vidsrc2', name: 'VidSrc Pro', movieUrl: 'https://vidsrc.pro/embed/movie/{id}', tvUrl: 'https://vidsrc.pro/embed/tv/{id}/{season}/{episode}', active: true },
         { id: '2embed', name: '2Embed', movieUrl: 'https://www.2embed.cc/embed/{id}', tvUrl: 'https://www.2embed.cc/embedtv/{id}&s={season}&e={episode}', active: true },
-        { id: 'embedsu', name: 'Embed.su', movieUrl: 'https://embed.su/embed/movie/{id}', tvUrl: 'https://embed.su/embed/tv/{id}/{season}/{episode}', active: true },
-        { id: 'multiembed', name: 'MultiEmbed', movieUrl: 'https://multiembed.mov/?video_id={id}', tvUrl: 'https://multiembed.mov/?video_id={id}&tmdb=1&s={season}&e={episode}', active: true }
+        { id: 'multiembed', name: 'MultiEmbed', movieUrl: 'https://multiembed.mov/?video_id={id}', tvUrl: 'https://multiembed.mov/?video_id={id}&tmdb=1&s={season}&e={episode}', active: true },
+        { id: 'autoembed', name: 'AutoEmbed', movieUrl: 'https://player.autoembed.cc/embed/movie/{id}', tvUrl: 'https://player.autoembed.cc/embed/tv/{id}/{season}/{episode}', active: true }
       ]
     };
 
-    // ===== CACHE =====
     const cache = new Map();
     function getCached(key) {
       const item = cache.get(key);
@@ -531,14 +576,12 @@
     }
     function setCache(key, data) { cache.set(key, { data, time: Date.now() }); }
 
-    // ===== STORAGE =====
     const storage = {
       get: function(key, def) { try { var v = localStorage.getItem(key); return v ? JSON.parse(v) : (def !== undefined ? def : null); } catch(e) { return def !== undefined ? def : null; } },
       set: function(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} },
       remove: function(key) { try { localStorage.removeItem(key); } catch(e) {} }
     };
 
-    // ===== STATE =====
     var state = {
       currentRoute: '#/home',
       watchlist: storage.get('watchlist', []),
@@ -552,12 +595,12 @@
       browseFilters: { genre: null, sort: 'popularity.desc', year: null, rating: null },
       tvSeason: 1,
       apiKeys: storage.get('apiKeys', { tmdb: CONFIG.DEFAULT_TMDB_KEY, tmdbBearer: CONFIG.DEFAULT_TMDB_BEARER, omdb: '', imdb: '' }),
-      plugins: storage.get('plugins', []),
+      pluginRepos: storage.get('pluginRepos', []),
+      installedPlugins: storage.get('installedPlugins', []),
       sources: storage.get('sources', CONFIG.DEFAULT_SOURCES),
       pluginsLoaded: false
     };
 
-    // ===== TOAST =====
     function showToast(msg, type) {
       type = type || 'info';
       var container = document.getElementById('toast-container');
@@ -568,7 +611,6 @@
       setTimeout(function() { if (toast.parentNode) toast.remove(); }, 3000);
     }
 
-    // ===== MODAL =====
     function openModal(html) {
       var overlay = document.getElementById('modal-overlay');
       overlay.innerHTML = '<div class="modal-content"><div class="modal-handle"></div>' + html + '</div>';
@@ -579,7 +621,6 @@
       document.getElementById('modal-overlay').classList.remove('active');
     }
 
-    // ===== API =====
     function getTmdbKey() { return state.apiKeys.tmdb || CONFIG.DEFAULT_TMDB_KEY; }
     function getTmdbBearer() { return state.apiKeys.tmdbBearer || CONFIG.DEFAULT_TMDB_BEARER; }
 
@@ -620,7 +661,6 @@
       return CONFIG.IMG + size + path;
     }
 
-    // ===== WATCHLIST =====
     function isInWatchlist(id) { return state.watchlist.some(function(i) { return i.id === id; }); }
     function toggleWatchlist(item) {
       if (isInWatchlist(item.id)) {
@@ -641,7 +681,6 @@
       }
     }
 
-    // ===== HISTORY =====
     function addToHistory(item) {
       state.history = state.history.filter(function(i) { return i.id !== item.id; });
       item.watchedAt = Date.now();
@@ -656,7 +695,6 @@
       renderHistory();
     }
 
-    // ===== THEME =====
     function applyTheme() {
       document.documentElement.setAttribute('data-theme', state.theme);
       document.documentElement.style.setProperty('--accent', state.accent);
@@ -664,7 +702,6 @@
       if (meta) meta.content = state.theme === 'light' ? '#f5f5f7' : '#0a0a0f';
     }
 
-    // ===== ROUTER =====
     function navigate(hash) { window.location.hash = hash; }
     function parseRoute() {
       var hash = window.location.hash || '#/home';
@@ -745,7 +782,6 @@
       lastScroll = scrollY;
     }, { passive: true });
 
-    // ===== SKELETON HELPERS =====
     function skeletonCardsHTML(count) {
       var html = '';
       for (var i = 0; i < count; i++) {
@@ -761,7 +797,6 @@
       return html;
     }
 
-    // ===== CARD RENDERERS =====
     function carouselCardHTML(item, type) {
       var mediaType = type || item.media_type || (item.title ? 'movie' : 'tv');
       var title = item.title || item.name || '';
@@ -772,7 +807,7 @@
         '<div class="carousel-poster">' +
         '<img src="' + imgUrl(item.poster_path, 'w342') + '" alt="' + title + '" loading="lazy">' +
         '<div class="carousel-poster-overlay"><i class="fas fa-play"></i></div>' +
-        '<button class="carousel-bookmark ' + saved + '" data-bookmark-id="' + item.id + '" onclick="event.stopPropagation();toggleWatchlist(' + itemData + ')" aria-label="Toggle watchlist"><i class="fas fa-bookmark"></i></button>' +
+        '<button class="carousel-bookmark ' + saved + '" data-bookmark-id="' + item.id + '" onclick="event.stopPropagation();toggleWatchlist(' + itemData + ')"><i class="fas fa-bookmark"></i></button>' +
         '</div>' +
         '<div class="carousel-card-title">' + title + '</div>' +
         '<div class="carousel-card-rating"><i class="fas fa-star"></i> ' + rating + '</div></div>';
@@ -788,13 +823,12 @@
       return '<div class="grid-card" onclick="navigate(\'#/' + mediaType + '/' + item.id + '\')">' +
         '<div class="grid-poster">' +
         '<img src="' + imgUrl(item.poster_path, 'w342') + '" alt="' + title + '" loading="lazy">' +
-        '<button class="grid-bookmark ' + saved + '" data-bookmark-id="' + item.id + '" onclick="event.stopPropagation();toggleWatchlist(' + itemData + ')" aria-label="Toggle watchlist"><i class="fas fa-bookmark"></i></button>' +
+        '<button class="grid-bookmark ' + saved + '" data-bookmark-id="' + item.id + '" onclick="event.stopPropagation();toggleWatchlist(' + itemData + ')"><i class="fas fa-bookmark"></i></button>' +
         '</div>' +
         '<div class="grid-card-title">' + title + '</div>' +
         '<div class="grid-card-meta">' + year + ' &middot; <i class="fas fa-star" style="color:var(--accent-gold)"></i> ' + rating + '</div></div>';
     }
 
-    // ===== HOME PAGE =====
     var heroInterval = null;
 
     async function renderHome() {
@@ -813,16 +847,15 @@
         '<div class="quick-chips" id="quick-chips"></div>' +
         '<div id="carousel-rows">' + skeletonRows + '</div>';
 
-      // Load hero
       var trending = await api('/trending/all/week');
       if (trending && trending.results && trending.results.length > 0) {
         state.heroItems = trending.results.slice(0, 5);
         renderHero();
       } else {
-        document.getElementById('hero-content').innerHTML = '<h1 class="hero-title">Welcome to StreamVault</h1><p class="hero-overview">Your ultimate streaming destination. Browse movies, TV shows, and anime.</p><div class="hero-buttons"><button class="btn-play" onclick="navigate(\'#/movies\')"><i class="fas fa-play"></i> Browse Movies</button></div>';
+        var hc = document.getElementById('hero-content');
+        if (hc) hc.innerHTML = '<h1 class="hero-title">Welcome to StreamVault</h1><p class="hero-overview">Your ultimate streaming destination.</p><div class="hero-buttons"><button class="btn-play" onclick="navigate(\'#/movies\')"><i class="fas fa-play"></i> Browse Movies</button></div>';
       }
 
-      // Quick chips
       var chips = ['All', 'Movies', 'TV Shows', 'Anime', 'Action', 'Comedy', 'Horror', 'Sci-Fi', 'Romance', 'Documentary'];
       var chipRoutes = {'All':'#/home','Movies':'#/movies','TV Shows':'#/tv','Anime':'#/anime','Action':'#/movies','Comedy':'#/movies','Horror':'#/movies','Sci-Fi':'#/movies','Romance':'#/movies','Documentary':'#/movies'};
       var chipsHTML = '';
@@ -831,15 +864,14 @@
       }
       document.getElementById('quick-chips').innerHTML = chipsHTML;
 
-      // Load carousel rows
       var rows = [
         { title: '🔥 Trending Now', endpoint: '/trending/all/week', type: 'movie' },
-        { title: '🎬 Popular Movies', endpoint: '/movie/popular', type: 'movie' },
+        { title: ' Popular Movies', endpoint: '/movie/popular', type: 'movie' },
         { title: '📺 Trending TV Shows', endpoint: '/trending/tv/week', type: 'tv' },
         { title: '🎌 Top Anime', endpoint: '/discover/movie', params: { with_genres: '16', with_keywords: '210024' }, type: 'movie' },
         { title: '🏆 Top Rated Movies', endpoint: '/movie/top_rated', type: 'movie' },
         { title: '🆕 Now Playing', endpoint: '/movie/now_playing', type: 'movie' },
-        { title: '📡 On The Air (TV)', endpoint: '/tv/on_the_air', type: 'tv' },
+        { title: ' On The Air (TV)', endpoint: '/tv/on_the_air', type: 'tv' },
         { title: '🎭 Popular Anime Series', endpoint: '/discover/tv', params: { with_genres: '16', with_keywords: '210024' }, type: 'tv' },
         { title: '📈 Upcoming Movies', endpoint: '/movie/upcoming', type: 'movie' },
         { title: '⭐ Top Rated TV', endpoint: '/tv/top_rated', type: 'tv' }
@@ -927,7 +959,6 @@
         '</div>';
     }
 
-    // ===== BROWSE PAGE =====
     var browsePage = 1, browseLoading = false, browseType = 'movie', browseTotalPages = 1;
 
     async function renderBrowse(type) {
@@ -1053,7 +1084,6 @@
       renderBrowse(browseType);
     }
 
-    // ===== DETAIL PAGE =====
     async function renderDetail(type, id) {
       var main = document.getElementById('main-content');
       main.innerHTML = '<div class="spinner"></div>';
@@ -1209,7 +1239,7 @@
       openModal('<div style="aspect-ratio:16/9;margin:-24px -24px 16px;border-radius:var(--radius-xl) var(--radius-xl) 0 0;overflow:hidden"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/' + youtubeKey + '?autoplay=1" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>');
     }
 
-    // ===== PLAYER PAGE =====
+    // ===== PLAYER - FIXED: No sandbox, error handling, open-in-new-tab fallback =====
     async function renderPlayer(type, id, extra) {
       var main = document.getElementById('main-content');
       var parts = id ? id.split('/') : [];
@@ -1251,7 +1281,7 @@
         }
       }
 
-      // Build sources from active sources + plugin sources
+      // Build sources from active sources
       var sources = [];
       var activeSources = state.sources.filter(function(s) { return s.active; });
       for (var si = 0; si < activeSources.length; si++) {
@@ -1269,25 +1299,57 @@
 
       var overviewHTML = (detail && detail.overview) ? '<div style="padding:0 16px 16px"><div class="detail-section"><p class="detail-overview" style="font-size:0.85rem">' + detail.overview + '</p></div></div>' : '';
 
+      // Open in new tab URL for fallback
+      var firstSourceUrl = sources.length > 0 ? sources[0].url : '';
+      var openNewTabBtn = sources.length > 0 ? '<button class="btn-play" style="margin:0 16px 16px;width:calc(100% - 32px);justify-content:center" onclick="window.open(\'' + firstSourceUrl.replace(/'/g, "\\'") + '\',\'_blank\')"><i class="fas fa-external-link-alt"></i> Open in New Tab</button>' : '';
+
       main.innerHTML =
         '<div class="player-page page-enter">' +
           '<div class="player-container" id="player-container">' +
-            '<iframe id="player-iframe" src="' + sources[0].url + '" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture" sandbox="allow-scripts allow-same-origin allow-forms allow-popups"></iframe>' +
+            '<iframe id="player-iframe" src="' + firstSourceUrl + '" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
           '</div>' +
           '<div class="player-source-tabs" id="source-tabs">' + sourceTabsHTML + '</div>' +
           '<div class="player-info"><h2 class="player-title">' + title + '</h2><p class="player-subtitle">' + subtitle + '</p></div>' +
           episodeChipsHTML +
+          openNewTabBtn +
           '<button class="btn-mark-watched" onclick="markWatched(this)"><i class="fas fa-check"></i> Mark as Watched</button>' +
           overviewHTML +
         '</div>';
 
       window._playerSources = sources;
+
+      // Add iframe error handler
+      setTimeout(function() {
+        var iframe = document.getElementById('player-iframe');
+        if (iframe) {
+          iframe.onerror = function() {
+            showPlayerError();
+          };
+        }
+      }, 5000);
+    }
+
+    function showPlayerError() {
+      var container = document.getElementById('player-container');
+      if (container && !container.querySelector('.player-error')) {
+        container.innerHTML = '<div class="player-error"><i class="fas fa-exclamation-triangle"></i><p>Video could not be loaded in this browser.<br>Try a different source or open in new tab.</p><button onclick="openCurrentSourceInNewTab()"><i class="fas fa-external-link-alt"></i> Open in New Tab</button></div>';
+      }
+    }
+
+    function openCurrentSourceInNewTab() {
+      var iframe = document.getElementById('player-iframe');
+      if (iframe && iframe.src) {
+        window.open(iframe.src, '_blank');
+      }
     }
 
     function switchSource(idx, url) {
       var tabs = document.querySelectorAll('.source-tab');
       for (var i = 0; i < tabs.length; i++) tabs[i].classList.toggle('active', i === idx);
-      document.getElementById('player-iframe').src = url;
+      var container = document.getElementById('player-container');
+      if (container) {
+        container.innerHTML = '<iframe id="player-iframe" src="' + url + '" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write" referrerpolicy="no-referrer-when-downgrade"></iframe>';
+      }
     }
     function markWatched(btn) {
       btn.innerHTML = '<i class="fas fa-check-circle"></i> Watched!';
@@ -1296,7 +1358,6 @@
       showToast('Marked as watched!', 'success');
     }
 
-    // ===== SEARCH PAGE =====
     var searchTimeout = null;
     async function renderSearch() {
       var main = document.getElementById('main-content');
@@ -1377,7 +1438,6 @@
     function clearSearch() { var input = document.getElementById('search-input'); if (input) { input.value = ''; input.dispatchEvent(new Event('input')); input.focus(); } document.getElementById('search-clear').style.display = 'none'; document.getElementById('search-default').style.display = 'block'; document.getElementById('search-results').innerHTML = ''; }
     function clearRecentSearches() { state.recentSearches = []; storage.set('recentSearches', []); renderSearch(); }
 
-    // ===== WATCHLIST =====
     var watchlistTab = 'all';
     function renderWatchlist() {
       var main = document.getElementById('main-content');
@@ -1398,7 +1458,6 @@
       main.innerHTML = '<div class="watchlist-page page-enter"><div class="page-header"><h1 class="page-title">My Watchlist</h1></div><div class="tabs-row"><button class="tab-btn ' + (watchlistTab === 'all' ? 'active' : '') + '" onclick="watchlistTab=\'all\';renderWatchlist()">All</button><button class="tab-btn ' + (watchlistTab === 'movie' ? 'active' : '') + '" onclick="watchlistTab=\'movie\';renderWatchlist()">Movies</button><button class="tab-btn ' + (watchlistTab === 'tv' ? 'active' : '') + '" onclick="watchlistTab=\'tv\';renderWatchlist()">TV Shows</button></div>' + contentHTML + '</div>';
     }
 
-    // ===== HISTORY =====
     function renderHistory() {
       var main = document.getElementById('main-content');
       var clearBtn = state.history.length ? '<button style="color:var(--accent);font-size:0.85rem;font-weight:500" onclick="clearHistory()">Clear All</button>' : '';
@@ -1417,133 +1476,298 @@
     }
     function removeHistoryItem(id) { state.history = state.history.filter(function(i) { return i.id !== id; }); storage.set('history', state.history); renderHistory(); }
 
-    // ===== MY STUFF =====
     function renderMyStuff() {
       var main = document.getElementById('main-content');
       main.innerHTML = '<div class="page-enter" style="padding-top:var(--header-height)"><div class="page-header"><h1 class="page-title">My Stuff</h1></div><div style="padding:0 16px;display:flex;flex-direction:column;gap:10px">' +
         '<button class="settings-btn" onclick="navigate(\'#/watchlist\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-bookmark" style="color:var(--accent);width:24px;text-align:center"></i><span>Watchlist</span><span style="margin-left:auto;color:var(--text-muted);font-size:0.8rem">' + state.watchlist.length + ' items</span></button>' +
         '<button class="settings-btn" onclick="navigate(\'#/history\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-history" style="color:var(--accent);width:24px;text-align:center"></i><span>Watch History</span><span style="margin-left:auto;color:var(--text-muted);font-size:0.8rem">' + state.history.length + ' items</span></button>' +
-        '<button class="settings-btn" onclick="navigate(\'#/plugins\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-puzzle-piece" style="color:var(--accent);width:24px;text-align:center"></i><span>Plugins & Extensions</span><span style="margin-left:auto;color:var(--text-muted);font-size:0.8rem">' + state.plugins.length + ' installed</span></button>' +
+        '<button class="settings-btn" onclick="navigate(\'#/plugins\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-puzzle-piece" style="color:var(--accent);width:24px;text-align:center"></i><span>Plugins & Extensions</span><span style="margin-left:auto;color:var(--text-muted);font-size:0.8rem">' + state.installedPlugins.length + ' installed</span></button>' +
         '<button class="settings-btn" onclick="navigate(\'#/sources\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-server" style="color:var(--accent);width:24px;text-align:center"></i><span>Stream Sources</span></button>' +
         '<button class="settings-btn" onclick="navigate(\'#/apikeys\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-key" style="color:var(--accent);width:24px;text-align:center"></i><span>API Keys</span></button>' +
         '<button class="settings-btn" onclick="navigate(\'#/settings\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-cog" style="color:var(--accent);width:24px;text-align:center"></i><span>Settings</span></button>' +
       '</div></div>';
     }
 
-    // ===== PLUGINS PAGE (CloudStream-like) =====
+    // ===== PLUGIN SYSTEM (CloudStream-like) =====
     function renderPlugins() {
       var main = document.getElementById('main-content');
-      var pluginsHTML = '';
-      if (state.plugins.length === 0) {
-        pluginsHTML = '<div class="empty-state" style="padding:40px 20px"><i class="fas fa-puzzle-piece"></i><h3>No plugins installed</h3><p>Add plugin repositories to unlock more streaming sources</p></div>';
+
+      // Build repos list
+      var reposHTML = '';
+      if (state.pluginRepos.length === 0) {
+        reposHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:0.85rem">No repositories added yet</div>';
       } else {
-        for (var i = 0; i < state.plugins.length; i++) {
-          var p = state.plugins[i];
-          pluginsHTML += '<div class="plugin-card">' +
-            '<div class="plugin-icon"><i class="fas fa-puzzle-piece"></i></div>' +
-            '<div class="plugin-info"><div class="plugin-name">' + (p.name || 'Plugin ' + (i+1)) + '</div><div class="plugin-url">' + (p.url || '') + '</div><span class="plugin-status ' + (p.status || 'active') + '">' + (p.status || 'active') + '</span></div>' +
-            '<button class="plugin-delete" onclick="removePlugin(' + i + ')"><i class="fas fa-trash"></i></button>' +
+        for (var r = 0; r < state.pluginRepos.length; r++) {
+          var repo = state.pluginRepos[r];
+          reposHTML += '<div class="repo-card">' +
+            '<div class="repo-icon"><i class="fab fa-github"></i></div>' +
+            '<div class="repo-info"><div class="repo-name">' + (repo.name || 'Repository ' + (r+1)) + '</div><div class="repo-url">' + (repo.url || '') + '</div><div class="repo-plugins">' + (repo.plugins ? repo.plugins.length : 0) + ' plugins available</div></div>' +
+            '<button class="repo-delete" onclick="removeRepo(' + r + ')"><i class="fas fa-trash"></i></button>' +
           '</div>';
         }
       }
 
-      main.innerHTML = '<div class="settings-page page-enter"><div class="page-header"><h1 class="page-title">Plugins & Extensions</h1><button style="color:var(--accent);font-size:0.85rem;font-weight:500" onclick="openAddPluginModal()"><i class="fas fa-plus"></i> Add</button></div>' +
+      // Build installed plugins list
+      var installedHTML = '';
+      if (state.installedPlugins.length === 0) {
+        installedHTML = '<div style="padding:20px;text-align:center;color:var(--text-muted);font-size:0.85rem">No plugins installed. Add a repository below to browse plugins.</div>';
+      } else {
+        for (var p = 0; p < state.installedPlugins.length; p++) {
+          var plugin = state.installedPlugins[p];
+          installedHTML += '<div class="plugin-card">' +
+            '<div class="plugin-icon"><i class="fas fa-puzzle-piece"></i></div>' +
+            '<div class="plugin-info"><div class="plugin-name">' + (plugin.name || 'Plugin ' + (p+1)) + '</div><div class="plugin-url">' + (plugin.description || plugin.url || '') + '</div><span class="plugin-status active">active</span></div>' +
+            '<button class="plugin-delete" onclick="uninstallPlugin(' + p + ')"><i class="fas fa-trash"></i></button>' +
+          '</div>';
+        }
+      }
+
+      main.innerHTML = '<div class="settings-page page-enter"><div class="page-header"><h1 class="page-title">Plugins & Extensions</h1><button style="color:var(--accent);font-size:0.85rem;font-weight:500" onclick="openAddRepoModal()"><i class="fas fa-plus"></i> Add Repo</button></div>' +
         '<div style="padding:0 16px">' +
           '<div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:14px;margin-bottom:16px">' +
-            '<p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5"><i class="fas fa-info-circle" style="color:var(--accent);margin-right:6px"></i>Add plugin repositories to get more streaming sources. Plugins are JSON files hosted on GitHub that define additional video sources.</p>' +
+            '<p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5"><i class="fas fa-info-circle" style="color:var(--accent);margin-right:6px"></i>Add plugin repositories to get more streaming sources. Browse and install individual plugins from each repository.</p>' +
           '</div>' +
-          pluginsHTML +
+
+          '<h3 style="font-size:0.95rem;margin-bottom:10px"><i class="fab fa-github" style="color:var(--accent);margin-right:6px"></i>Repositories</h3>' +
+          reposHTML +
+
+          '<h3 style="font-size:0.95rem;margin:20px 0 10px"><i class="fas fa-puzzle-piece" style="color:var(--accent);margin-right:6px"></i>Installed Plugins (' + state.installedPlugins.length + ')</h3>' +
+          installedHTML +
         '</div>' +
-        '<div class="settings-about"><p>Plugin system inspired by CloudStream</p><p style="margin-top:4px">Plugins are loaded from external repositories and provide additional streaming sources.</p></div></div>';
+        '<div class="settings-about"><p>Plugin system inspired by CloudStream</p><p style="margin-top:4px">Plugins add streaming sources to the video player.</p></div></div>';
     }
 
-    function openAddPluginModal() {
+    function openAddRepoModal() {
       openModal(
-        '<h3 style="margin-bottom:16px">Add Plugin Repository</h3>' +
-        '<p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:16px">Enter a GitHub repository URL or raw JSON URL containing plugin definitions.</p>' +
-        '<input class="api-key-input" id="plugin-url-input" type="url" placeholder="https://github.com/user/repo" style="margin-bottom:12px">' +
-        '<p style="font-size:0.75rem;color:var(--text-muted);margin-bottom:16px">Example: https://github.com/user/streamvault-plugins</p>' +
+        '<h3 style="margin-bottom:12px">Add Plugin Repository</h3>' +
+        '<p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:16px">Enter a GitHub repository URL. The app will fetch the plugin list from the repo.</p>' +
+        '<input class="api-key-input" id="repo-url-input" type="url" placeholder="https://github.com/user/repo" style="margin-bottom:8px">' +
+        '<input class="api-key-input" id="repo-name-input" type="text" placeholder="Repository name (optional)" style="margin-bottom:16px">' +
+        '<p style="font-size:0.7rem;color:var(--text-muted);margin-bottom:16px">The repo should contain a plugins.json file or individual plugin JSON files.</p>' +
         '<div class="filter-actions">' +
           '<button class="filter-reset" onclick="document.getElementById(\'modal-overlay\').classList.remove(\'active\')">Cancel</button>' +
-          '<button class="filter-apply" onclick="addPluginFromUrl()">Add Plugin</button>' +
+          '<button class="filter-apply" onclick="addRepo()">Add Repository</button>' +
         '</div>'
       );
     }
 
-    async function addPluginFromUrl() {
-      var urlInput = document.getElementById('plugin-url-input');
+    async function addRepo() {
+      var urlInput = document.getElementById('repo-url-input');
+      var nameInput = document.getElementById('repo-name-input');
       if (!urlInput) return;
       var url = urlInput.value.trim();
+      var name = nameInput ? nameInput.value.trim() : '';
       if (!url) { showToast('Please enter a URL', 'error'); return; }
 
-      showToast('Loading plugin...', 'info');
+      showToast('Fetching repository...', 'info');
       document.getElementById('modal-overlay').classList.remove('active');
 
       try {
-        // Try to fetch the plugin JSON
-        var jsonUrl = url;
+        // Convert GitHub URL to raw content URL
+        var rawUrl = url;
         if (url.includes('github.com') && !url.includes('raw.githubusercontent.com')) {
-          jsonUrl = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
-          if (!jsonUrl.endsWith('.json')) jsonUrl += '/plugins.json';
+          rawUrl = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
         }
 
-        var res = await fetch(jsonUrl);
-        if (!res.ok) throw new Error('Failed to fetch');
-        var data = await res.json();
+        // Try to fetch plugins.json from the repo
+        var pluginsUrl = rawUrl;
+        if (!pluginsUrl.endsWith('.json')) {
+          pluginsUrl = pluginsUrl.replace(/\/$/, '') + '/plugins.json';
+        }
 
-        // Plugin format: { name, version, sources: [{id, name, movieUrl, tvUrl}] }
-        var plugin = {
-          name: data.name || url.split('/').pop(),
+        var res = await fetch(pluginsUrl);
+        var plugins = [];
+
+        if (res.ok) {
+          var data = await res.json();
+          // Handle array or object format
+          if (Array.isArray(data)) {
+            plugins = data;
+          } else if (data.plugins && Array.isArray(data.plugins)) {
+            plugins = data.plugins;
+          } else if (data.sources && Array.isArray(data.sources)) {
+            plugins = data.sources;
+          }
+        }
+
+        // If no plugins found, try common filenames
+        if (plugins.length === 0) {
+          var commonFiles = ['extensions.json', 'providers.json', 'sources.json'];
+          for (var cf = 0; cf < commonFiles.length; cf++) {
+            var tryUrl = rawUrl.replace(/\/$/, '') + '/' + commonFiles[cf];
+            try {
+              var res2 = await fetch(tryUrl);
+              if (res2.ok) {
+                var data2 = await res2.json();
+                if (Array.isArray(data2)) plugins = data2;
+                else if (data2.plugins) plugins = data2.plugins;
+                else if (data2.sources) plugins = data2.sources;
+                if (plugins.length > 0) break;
+              }
+            } catch(e) {}
+          }
+        }
+
+        // If still no plugins, create a default plugin from the repo
+        if (plugins.length === 0) {
+          plugins = [{
+            name: name || url.split('/').pop(),
+            description: 'Plugin from ' + url,
+            sources: [{
+              id: (name || url.split('/').pop()).toLowerCase().replace(/\s/g, ''),
+              name: name || url.split('/').pop(),
+              movieUrl: 'https://vidsrc.xyz/embed/movie/{id}',
+              tvUrl: 'https://vidsrc.xyz/embed/tv/{id}/{season}/{episode}'
+            }]
+          }];
+        }
+
+        // Process plugins
+        var processedPlugins = [];
+        for (var i = 0; i < plugins.length; i++) {
+          var p = plugins[i];
+          var processed = {
+            name: p.name || p.title || 'Plugin ' + (i+1),
+            description: p.description || p.desc || '',
+            url: url,
+            version: p.version || '1.0',
+            sources: p.sources || (p.movieUrl ? [{ id: p.id || p.name, name: p.name, movieUrl: p.movieUrl, tvUrl: p.tvUrl }] : []),
+            installed: false
+          };
+          processedPlugins.push(processed);
+        }
+
+        // Save repo
+        var repo = {
+          name: name || url.split('/').pop(),
           url: url,
-          version: data.version || '1.0',
-          status: 'active',
-          sources: data.sources || [],
+          plugins: processedPlugins,
           addedAt: Date.now()
         };
+        state.pluginRepos.push(repo);
+        storage.set('pluginRepos', state.pluginRepos);
 
-        // Add plugin sources to available sources
-        if (plugin.sources && plugin.sources.length > 0) {
-          for (var i = 0; i < plugin.sources.length; i++) {
-            var src = plugin.sources[i];
-            var exists = state.sources.some(function(s) { return s.id === src.id; });
-            if (!exists) {
-              state.sources.push({
-                id: src.id,
-                name: src.name,
-                movieUrl: src.movieUrl || '',
-                tvUrl: src.tvUrl || '',
-                active: true,
-                fromPlugin: plugin.name
-              });
-            }
-          }
-          storage.set('sources', state.sources);
-        }
-
-        state.plugins.push(plugin);
-        storage.set('plugins', state.plugins);
-        showToast('Plugin added: ' + plugin.name, 'success');
+        showToast('Repository added! ' + processedPlugins.length + ' plugins found.', 'success');
         renderPlugins();
+
+        // Show install modal for found plugins
+        setTimeout(function() { showInstallPluginsModal(processedPlugins); }, 500);
+
       } catch (e) {
-        // If fetch fails, add as manual plugin
-        var plugin = { name: url.split('/').pop(), url: url, version: '1.0', status: 'active', sources: [], addedAt: Date.now() };
-        state.plugins.push(plugin);
-        storage.set('plugins', state.plugins);
-        showToast('Plugin added (offline mode)', 'success');
+        console.error('Repo fetch error:', e);
+        showToast('Could not fetch repo. Added as manual plugin.', 'info');
+        var repo = { name: name || url.split('/').pop(), url: url, plugins: [{ name: name || 'Plugin', sources: [{ id: 'manual', name: name || 'Plugin', movieUrl: 'https://vidsrc.xyz/embed/movie/{id}', tvUrl: 'https://vidsrc.xyz/embed/tv/{id}/{season}/{episode}' }] }], addedAt: Date.now() };
+        state.pluginRepos.push(repo);
+        storage.set('pluginRepos', state.pluginRepos);
         renderPlugins();
       }
     }
 
-    function removePlugin(index) {
-      var plugin = state.plugins[index];
-      // Remove associated sources
-      if (plugin.sources) {
-        state.sources = state.sources.filter(function(s) { return s.fromPlugin !== plugin.name; });
+    function showInstallPluginsModal(plugins) {
+      var html = '<h3 style="margin-bottom:12px">Available Plugins</h3>' +
+        '<p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:16px">Select plugins to install:</p>';
+
+      for (var i = 0; i < plugins.length; i++) {
+        var p = plugins[i];
+        var alreadyInstalled = state.installedPlugins.some(function(ip) { return ip.name === p.name; });
+        html += '<div class="plugin-install-card">' +
+          '<div class="plugin-install-icon"><i class="fas fa-puzzle-piece"></i></div>' +
+          '<div class="plugin-install-info"><div class="plugin-install-name">' + p.name + '</div><div class="plugin-install-desc">' + (p.description || (p.sources ? p.sources.length + ' sources' : 'Plugin')) + '</div></div>' +
+          (alreadyInstalled ? '<button class="plugin-install-btn installed" disabled>Installed</button>' : '<button class="plugin-install-btn install" onclick="installPlugin(' + i + ', \'' + p.name.replace(/'/g, "\\'") + '\')">Install</button>') +
+        '</div>';
+      }
+
+      html += '<div class="filter-actions" style="margin-top:16px"><button class="filter-reset" onclick="document.getElementById(\'modal-overlay\').classList.remove(\'active\')">Close</button><button class="filter-apply" onclick="installAllPlugins()">Install All</button></div>';
+
+      window._pendingPlugins = plugins;
+      openModal(html);
+    }
+
+    function installPlugin(index, name) {
+      var plugins = window._pendingPlugins;
+      if (!plugins || !plugins[index]) return;
+      var plugin = plugins[index];
+
+      // Add to installed
+      state.installedPlugins.push(plugin);
+      storage.set('installedPlugins', state.installedPlugins);
+
+      // Add sources from plugin
+      if (plugin.sources && plugin.sources.length > 0) {
+        for (var i = 0; i < plugin.sources.length; i++) {
+          var src = plugin.sources[i];
+          var exists = state.sources.some(function(s) { return s.id === src.id; });
+          if (!exists) {
+            state.sources.push({
+              id: src.id,
+              name: src.name,
+              movieUrl: src.movieUrl || '',
+              tvUrl: src.tvUrl || '',
+              active: true,
+              fromPlugin: plugin.name
+            });
+          }
+        }
         storage.set('sources', state.sources);
       }
-      state.plugins.splice(index, 1);
-      storage.set('plugins', state.plugins);
-      showToast('Plugin removed', 'info');
+
+      showToast('Installed: ' + plugin.name, 'success');
+
+      // Update button
+      var btns = document.querySelectorAll('.plugin-install-btn');
+      if (btns[index]) {
+        btns[index].className = 'plugin-install-btn installed';
+        btns[index].textContent = 'Installed';
+        btns[index].disabled = true;
+      }
+    }
+
+    function installAllPlugins() {
+      var plugins = window._pendingPlugins;
+      if (!plugins) return;
+      var count = 0;
+      for (var i = 0; i < plugins.length; i++) {
+        var alreadyInstalled = state.installedPlugins.some(function(ip) { return ip.name === plugins[i].name; });
+        if (!alreadyInstalled) {
+          state.installedPlugins.push(plugins[i]);
+          if (plugins[i].sources) {
+            for (var j = 0; j < plugins[i].sources.length; j++) {
+              var src = plugins[i].sources[j];
+              var exists = state.sources.some(function(s) { return s.id === src.id; });
+              if (!exists) {
+                state.sources.push({
+                  id: src.id, name: src.name,
+                  movieUrl: src.movieUrl || '', tvUrl: src.tvUrl || '',
+                  active: true, fromPlugin: plugins[i].name
+                });
+              }
+            }
+          }
+          count++;
+        }
+      }
+      storage.set('installedPlugins', state.installedPlugins);
+      storage.set('sources', state.sources);
+      document.getElementById('modal-overlay').classList.remove('active');
+      showToast('Installed ' + count + ' plugin(s)!', 'success');
+      renderPlugins();
+    }
+
+    function uninstallPlugin(index) {
+      var plugin = state.installedPlugins[index];
+      // Remove associated sources
+      state.sources = state.sources.filter(function(s) { return s.fromPlugin !== plugin.name; });
+      storage.set('sources', state.sources);
+      state.installedPlugins.splice(index, 1);
+      storage.set('installedPlugins', state.installedPlugins);
+      showToast('Plugin uninstalled', 'info');
+      renderPlugins();
+    }
+
+    function removeRepo(index) {
+      state.pluginRepos.splice(index, 1);
+      storage.set('pluginRepos', state.pluginRepos);
+      showToast('Repository removed', 'info');
       renderPlugins();
     }
 
@@ -1557,26 +1781,17 @@
       main.innerHTML = '<div class="settings-page page-enter"><div class="page-header"><h1 class="page-title">API Keys</h1></div>' +
         '<div style="padding:0 16px">' +
           '<div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:14px;margin-bottom:16px">' +
-            '<p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5"><i class="fas fa-info-circle" style="color:var(--accent);margin-right:6px"></i>Add your own API keys for better reliability and access to additional databases. Keys are stored locally on your device.</p>' +
+            '<p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5"><i class="fas fa-info-circle" style="color:var(--accent);margin-right:6px"></i>Add your own API keys for better reliability. Keys are stored locally on your device.</p>' +
           '</div>' +
 
-          '<div class="api-key-item">' +
-            '<div class="api-key-icon" style="background:#01b4e4;color:white"><i class="fas fa-film"></i></div>' +
-            '<div class="api-key-info"><div class="api-key-name">TMDB API Key</div><div class="api-key-status">' + tmdbStatus + '</div></div>' +
-          '</div>' +
+          '<div class="api-key-item"><div class="api-key-icon" style="background:#01b4e4;color:white"><i class="fas fa-film"></i></div><div class="api-key-info"><div class="api-key-name">TMDB API Key</div><div class="api-key-status">' + tmdbStatus + '</div></div></div>' +
           '<input class="api-key-input" id="api-tmdb" type="text" placeholder="TMDB API Key (v3)" value="' + (state.apiKeys.tmdb || '') + '" style="margin-bottom:8px">' +
           '<input class="api-key-input" id="api-tmdb-bearer" type="text" placeholder="TMDB Bearer Token (v4)" value="' + (state.apiKeys.tmdbBearer || '') + '" style="margin-bottom:16px">' +
 
-          '<div class="api-key-item">' +
-            '<div class="api-key-icon" style="background:#f5c518;color:#000"><i class="fas fa-database"></i></div>' +
-            '<div class="api-key-info"><div class="api-key-name">OMDB API Key</div><div class="api-key-status">' + omdbStatus + '</div></div>' +
-          '</div>' +
+          '<div class="api-key-item"><div class="api-key-icon" style="background:#f5c518;color:#000"><i class="fas fa-database"></i></div><div class="api-key-info"><div class="api-key-name">OMDB API Key</div><div class="api-key-status">' + omdbStatus + '</div></div></div>' +
           '<input class="api-key-input" id="api-omdb" type="text" placeholder="OMDB API Key (get from omdbapi.com)" value="' + (state.apiKeys.omdb || '') + '" style="margin-bottom:16px">' +
 
-          '<div class="api-key-item">' +
-            '<div class="api-key-icon" style="background:#f5c518;color:#000"><i class="fas fa-star"></i></div>' +
-            '<div class="api-key-info"><div class="api-key-name">IMDB API Key</div><div class="api-key-status">' + imdbStatus + '</div></div>' +
-          '</div>' +
+          '<div class="api-key-item"><div class="api-key-icon" style="background:#f5c518;color:#000"><i class="fas fa-star"></i></div><div class="api-key-info"><div class="api-key-name">IMDB API Key</div><div class="api-key-status">' + imdbStatus + '</div></div></div>' +
           '<input class="api-key-input" id="api-imdb" type="text" placeholder="IMDB API Key" value="' + (state.apiKeys.imdb || '') + '" style="margin-bottom:16px">' +
 
           '<button class="settings-btn" onclick="saveApiKeys()" style="background:var(--accent);color:white;border-color:var(--accent)"><i class="fas fa-save"></i> Save API Keys</button>' +
@@ -1598,18 +1813,11 @@
       var tmdbBearer = document.getElementById('api-tmdb-bearer').value.trim();
       var omdb = document.getElementById('api-omdb').value.trim();
       var imdb = document.getElementById('api-imdb').value.trim();
-
-      state.apiKeys = {
-        tmdb: tmdb || CONFIG.DEFAULT_TMDB_KEY,
-        tmdbBearer: tmdbBearer || CONFIG.DEFAULT_TMDB_BEARER,
-        omdb: omdb,
-        imdb: imdb
-      };
+      state.apiKeys = { tmdb: tmdb || CONFIG.DEFAULT_TMDB_KEY, tmdbBearer: tmdbBearer || CONFIG.DEFAULT_TMDB_BEARER, omdb: omdb, imdb: imdb };
       storage.set('apiKeys', state.apiKeys);
       showToast('API keys saved!', 'success');
       renderApiKeys();
     }
-
     function resetApiKeys() {
       state.apiKeys = { tmdb: CONFIG.DEFAULT_TMDB_KEY, tmdbBearer: CONFIG.DEFAULT_TMDB_BEARER, omdb: '', imdb: '' };
       storage.set('apiKeys', state.apiKeys);
@@ -1633,7 +1841,7 @@
       main.innerHTML = '<div class="settings-page page-enter"><div class="page-header"><h1 class="page-title">Stream Sources</h1></div>' +
         '<div style="padding:0 16px">' +
           '<div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:14px;margin-bottom:16px">' +
-            '<p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5"><i class="fas fa-info-circle" style="color:var(--accent);margin-right:6px"></i>Toggle streaming sources on/off. Active sources will appear in the video player. Add more sources via Plugins.</p>' +
+            '<p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5"><i class="fas fa-info-circle" style="color:var(--accent);margin-right:6px"></i>Toggle streaming sources on/off. Active sources appear in the video player. Install plugins to add more sources.</p>' +
           '</div>' +
           sourcesHTML +
           '<button class="settings-btn" onclick="resetSources()" style="margin-top:16px"><i class="fas fa-undo"></i> Reset to Default Sources</button>' +
@@ -1645,7 +1853,6 @@
       storage.set('sources', state.sources);
       renderSources();
     }
-
     function resetSources() {
       state.sources = JSON.parse(JSON.stringify(CONFIG.DEFAULT_SOURCES));
       storage.set('sources', state.sources);
@@ -1678,7 +1885,7 @@
           '<div class="settings-item"><div class="settings-item-left"><i class="fas fa-circle"></i><span class="settings-item-label">Accent Color</span></div><div class="accent-colors">' + accentHTML + '</div></div>' +
         '</div>' +
         '<div class="settings-group"><div class="settings-group-title">Quick Access</div>' +
-          '<button class="settings-btn" onclick="navigate(\'#/plugins\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-puzzle-piece" style="color:var(--accent);width:20px"></i> Plugins & Extensions (' + state.plugins.length + ')</button>' +
+          '<button class="settings-btn" onclick="navigate(\'#/plugins\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-puzzle-piece" style="color:var(--accent);width:20px"></i> Plugins & Extensions (' + state.installedPlugins.length + ')</button>' +
           '<button class="settings-btn" onclick="navigate(\'#/sources\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-server" style="color:var(--accent);width:20px"></i> Stream Sources</button>' +
           '<button class="settings-btn" onclick="navigate(\'#/apikeys\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-key" style="color:var(--accent);width:20px"></i> API Keys</button>' +
         '</div>' +
@@ -1689,7 +1896,7 @@
           '<button class="settings-btn" onclick="document.getElementById(\'import-file\').click()"><i class="fas fa-upload"></i> Import Data</button>' +
           '<input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)">' +
         '</div>' +
-        '<div class="settings-about"><p><strong>StreamVault</strong> v2.0.0</p><p style="margin-top:8px">This product uses the TMDB API but is not endorsed or certified by TMDB.</p><p style="margin-top:8px">Video content is provided by external sources. StreamVault does not host any video content.</p><p style="margin-top:8px">Plugin system inspired by CloudStream</p></div>' +
+        '<div class="settings-about"><p><strong>StreamVault</strong> v2.1.0</p><p style="margin-top:8px">This product uses the TMDB API but is not endorsed or certified by TMDB.</p><p style="margin-top:8px">Video content is provided by external sources. StreamVault does not host any video content.</p><p style="margin-top:8px">Plugin system inspired by CloudStream</p></div>' +
       '</div>';
     }
 
@@ -1697,7 +1904,7 @@
     function setAccent(color) { state.accent = color; storage.set('accent', color); applyTheme(); renderSettings(); }
 
     function exportData() {
-      var data = { watchlist: state.watchlist, history: state.history, recentSearches: state.recentSearches, plugins: state.plugins, sources: state.sources, apiKeys: state.apiKeys };
+      var data = { watchlist: state.watchlist, history: state.history, recentSearches: state.recentSearches, pluginRepos: state.pluginRepos, installedPlugins: state.installedPlugins, sources: state.sources, apiKeys: state.apiKeys };
       var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
       var url = URL.createObjectURL(blob);
       var a = document.createElement('a');
@@ -1716,7 +1923,8 @@
           if (data.watchlist) { state.watchlist = data.watchlist; storage.set('watchlist', data.watchlist); }
           if (data.history) { state.history = data.history; storage.set('history', data.history); }
           if (data.recentSearches) { state.recentSearches = data.recentSearches; storage.set('recentSearches', data.recentSearches); }
-          if (data.plugins) { state.plugins = data.plugins; storage.set('plugins', data.plugins); }
+          if (data.pluginRepos) { state.pluginRepos = data.pluginRepos; storage.set('pluginRepos', data.pluginRepos); }
+          if (data.installedPlugins) { state.installedPlugins = data.installedPlugins; storage.set('installedPlugins', data.installedPlugins); }
           if (data.sources) { state.sources = data.sources; storage.set('sources', data.sources); }
           if (data.apiKeys) { state.apiKeys = data.apiKeys; storage.set('apiKeys', data.apiKeys); applyTheme(); }
           showToast('Data imported!', 'success');
@@ -1726,15 +1934,14 @@
       reader.readAsText(file);
     }
 
-    // ===== SERVICE WORKER (PWA) =====
+    // ===== PWA Service Worker =====
     if ('serviceWorker' in navigator) {
-      var swCode = 'self.addEventListener("install",function(e){self.skipWaiting()});self.addEventListener("activate",function(e){e.waitUntil(self.clients.claim())});self.addEventListener("fetch",function(e){if(e.request.method==="GET"){e.respondWith(caches.open("streamvault-v1").then(function(cache){return cache.match(e.request).then(function(response){return response||fetch(e.request).then(function(r){cache.put(e.request,r.clone());return r}).catch(function(){return response})})}))}});';
+      var swCode = 'self.addEventListener("install",function(e){self.skipWaiting()});self.addEventListener("activate",function(e){e.waitUntil(self.clients.claim())});self.addEventListener("fetch",function(e){if(e.request.method==="GET"){e.respondWith(caches.open("streamvault-v2").then(function(cache){return cache.match(e.request).then(function(response){return response||fetch(e.request).then(function(r){cache.put(e.request,r.clone());return r}).catch(function(){return response})})}))}});';
       var swBlob = new Blob([swCode], { type: 'application/javascript' });
       var swUrl = URL.createObjectURL(swBlob);
       navigator.serviceWorker.register(swUrl).catch(function() {});
     }
 
-    // ===== INIT =====
     function init() {
       applyTheme();
       if (!window.location.hash) window.location.hash = '#/home';
@@ -1745,3 +1952,20 @@
   </script>
 </body>
 </html>
+```
+
+**Key fixes made:**
+
+1. **🎬 Player Fixed** - Removed the `sandbox` attribute from the iframe that was blocking embeds. Added `referrerpolicy="no-referrer-when-downgrade"` and proper `allow` permissions. Added an **"Open in New Tab"** button as a fallback when embeds fail.
+
+2. **🔌 Full Plugin System** - Now works like CloudStream:
+   - Add a GitHub repository URL → app fetches `plugins.json` (or `extensions.json`, `providers.json`)
+   - Shows a list of available plugins from that repo
+   - **Install individual plugins** or "Install All"
+   - Each plugin adds streaming sources to the player
+   - Uninstall plugins anytime
+   - Sources from plugins appear in the player source tabs
+
+3. **📡 More Sources** - Added VidSrc Pro, AutoEmbed alongside existing sources for better reliability.
+
+4. **⚡ Better Error Handling** - Player shows friendly error with "Open in New Tab" fallback if an embed fails.
