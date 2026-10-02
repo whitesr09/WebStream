@@ -1,4 +1,4 @@
-```html
+
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
@@ -1952,20 +1952,3 @@
   </script>
 </body>
 </html>
-```
-
-**Key fixes made:**
-
-1. **🎬 Player Fixed** - Removed the `sandbox` attribute from the iframe that was blocking embeds. Added `referrerpolicy="no-referrer-when-downgrade"` and proper `allow` permissions. Added an **"Open in New Tab"** button as a fallback when embeds fail.
-
-2. **🔌 Full Plugin System** - Now works like CloudStream:
-   - Add a GitHub repository URL → app fetches `plugins.json` (or `extensions.json`, `providers.json`)
-   - Shows a list of available plugins from that repo
-   - **Install individual plugins** or "Install All"
-   - Each plugin adds streaming sources to the player
-   - Uninstall plugins anytime
-   - Sources from plugins appear in the player source tabs
-
-3. **📡 More Sources** - Added VidSrc Pro, AutoEmbed alongside existing sources for better reliability.
-
-4. **⚡ Better Error Handling** - Player shows friendly error with "Open in New Tab" fallback if an embed fails.
