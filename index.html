@@ -8,8 +8,11 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="mobile-web-app-capable" content="yes">
+  <meta name="description" content="StreamVault - Ultimate Streaming Web Application">
   <title>StreamVault</title>
-  <link rel="manifest" href='data:application/json;charset=utf-8,{"name":"StreamVault","short_name":"StreamVault","start_url":"./","display":"standalone","background_color":"#0a0a0f","theme_color":"#e50914","icons":[{"src":"data:image/svg+xml;utf8,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 192 192%22><rect fill=%22%230a0a0f%22 width=%22192%22 height=%22192%22 rx=%2240%22/><text x=%2296%22 y=%22130%22 text-anchor=%22middle%22 fill=%22%23e50914%22 font-size=%2280%22 font-weight=%22800%22>SV</text></svg>","sizes":"192x192","type":"image/svg+xml"}]}'>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230a0a0f' width='100' height='100' rx='20'/><text x='50' y='68' text-anchor='middle' fill='%23e50914' font-size='50' font-weight='800' font-family='Arial'>SV</text></svg>">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230a0a0f' width='100' height='100' rx='20'/><text x='50' y='68' text-anchor='middle' fill='%23e50914' font-size='50' font-weight='800' font-family='Arial'>SV</text></svg>">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/inter@latest/index.css">
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/fontsource/css/poppins@latest/index.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
@@ -175,10 +178,11 @@
     .episode-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
     .episode-overview { font-size: 0.75rem; color: var(--text-secondary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-    /* PLAYER */
-    .player-page { position: fixed; inset: 0; z-index: 300; background: #000; overflow: hidden; }
-    .player-container { position: relative; width: 100%; height: 100%; background: #000; }
-    .player-container iframe { width: 100%; height: 100%; border: none; }
+    /* PLAYER - Fixed: Not fullscreen initially */
+    .player-page { background: var(--bg-primary); min-height: 100vh; padding-bottom: 40px; }
+    .player-video-container { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; margin-bottom: 16px; }
+    .player-video-container iframe { width: 100%; height: 100%; border: none; }
+    .player-video-container.fullscreen { position: fixed; inset: 0; z-index: 300; aspect-ratio: unset; }
     .player-overlay { position: absolute; inset: 0; z-index: 10; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 25%, transparent 75%, rgba(0,0,0,0.8) 100%); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
     .player-overlay.visible { opacity: 1; }
     .player-overlay > * { pointer-events: auto; }
@@ -333,7 +337,6 @@
     .spinner::after { content: ''; width: 32px; height: 32px; border: 3px solid var(--border-subtle); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.8s linear infinite; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* Plugin/Extension Styles */
     .plugin-card { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); margin-bottom: 10px; }
     .plugin-icon { width: 44px; height: 44px; border-radius: var(--radius-sm); background: var(--bg-glass); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; }
     .plugin-info { flex: 1; min-width: 0; }
@@ -352,7 +355,6 @@
     .plugin-install-btn { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 600; flex-shrink: 0; }
     .plugin-install-btn.install { background: var(--accent); color: white; }
     .plugin-install-btn.installed { background: var(--bg-glass); color: var(--text-muted); border: 1px solid var(--border-subtle); }
-    .plugin-install-btn.download { background: var(--bg-glass); color: var(--text-primary); border: 1px solid var(--border-subtle); }
 
     .repo-card { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); margin-bottom: 10px; cursor: pointer; }
     .repo-card:hover { border-color: var(--accent); }
@@ -384,7 +386,6 @@
     .source-provider-toggle::after { content: ''; position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: white; transition: transform 0.2s; }
     .source-provider-toggle.active::after { transform: translateX(18px); }
 
-    /* Extension Browser (CloudStream-like) */
     .ext-browser-header { position: sticky; top: var(--header-height); z-index: 50; background: rgba(10,10,15,0.95); backdrop-filter: blur(20px); padding: 12px 16px; border-bottom: 1px solid var(--border-subtle); }
     .ext-browser-title { font-size: 1.2rem; font-weight: 700; display: flex; align-items: center; gap: 12px; }
     .ext-browser-title button { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
@@ -413,6 +414,10 @@
 
     .add-repo-btn { position: fixed; bottom: calc(var(--nav-height) + var(--safe-bottom) + 20px); right: 20px; z-index: 90; padding: 14px 20px; background: var(--accent); color: white; border-radius: var(--radius-lg); font-weight: 600; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; box-shadow: 0 4px 20px rgba(229,9,20,0.4); }
 
+    #install-prompt { position: fixed; bottom: calc(var(--nav-height) + var(--safe-bottom) + 20px); left: 16px; right: 16px; z-index: 150; padding: 16px; border-radius: var(--radius-lg); display: none; align-items: center; gap: 12px; }
+    #install-prompt.show { display: flex; }
+    #install-prompt button { padding: 8px 16px; background: var(--accent); color: white; border-radius: var(--radius-sm); font-weight: 600; font-size: 0.85rem; }
+
     @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; } }
     .hidden { display: none !important; }
   </style>
@@ -430,6 +435,12 @@
     <nav id="bottom-nav"></nav>
     <div id="toast-container"></div>
     <div id="modal-overlay" onclick="closeModal(event)"></div>
+    <div id="install-prompt" class="liquid-glass">
+      <i class="fas fa-download" style="font-size:1.5rem;color:var(--accent)"></i>
+      <div style="flex:1"><div style="font-weight:600;font-size:0.9rem">Install StreamVault</div><div style="font-size:0.75rem;color:var(--text-muted)">Add to home screen</div></div>
+      <button onclick="installApp()">Install</button>
+      <button onclick="dismissInstall()" style="background:transparent;color:var(--text-muted)"><i class="fas fa-times"></i></button>
+    </div>
   </div>
 
   <script>
@@ -447,11 +458,9 @@
         { id: '2embed', name: '2Embed', movieUrl: 'https://www.2embed.cc/embed/{id}', tvUrl: 'https://www.2embed.cc/embedtv/{id}&s={season}&e={episode}', active: true, icon: '2E' },
         { id: 'multiembed', name: 'MultiEmbed', movieUrl: 'https://multiembed.mov/?video_id={id}', tvUrl: 'https://multiembed.mov/?video_id={id}&tmdb=1&s={season}&e={episode}', active: true, icon: 'ME' },
         { id: 'autoembed', name: 'AutoEmbed', movieUrl: 'https://player.autoembed.cc/embed/movie/{id}', tvUrl: 'https://player.autoembed.cc/embed/tv/{id}/{season}/{episode}', active: true, icon: 'AE' },
-        { id: 'embedsu', name: 'EmbedSU', movieUrl: 'https://embed.su/embed/movie/{id}', tvUrl: 'https://embed.su/embed/tv/{id}/{season}/{episode}', active: true, icon: 'ES' },
         { id: 'smashystream', name: 'SmashyStream', movieUrl: 'https://embed.smashystream.com/playere.php?tmdb={id}', tvUrl: 'https://embed.smashystream.com/playere.php?tmdb={id}&season={season}&episode={episode}', active: true, icon: 'SS' },
         { id: 'vidlink', name: 'VidLink', movieUrl: 'https://vidlink.pro/movie/{id}', tvUrl: 'https://vidlink.pro/tv/{id}/{season}/{episode}', active: true, icon: 'VL' },
-        { id: 'vidcloud', name: 'VidCloud', movieUrl: 'https://vidcloud.icu/embed/movie/{id}', tvUrl: 'https://vidcloud.icu/embed/tv/{id}/{season}/{episode}', active: true, icon: 'VC' },
-        { id: 'superembed', name: 'SuperEmbed', movieUrl: 'https://multiembed.mov/directstream.php?video_id={id}', tvUrl: 'https://multiembed.mov/directstream.php?video_id={id}&tmdb=1&s={season}&e={episode}', active: true, icon: 'SE' }
+        { id: 'vidcloud', name: 'VidCloud', movieUrl: 'https://vidcloud.icu/embed/movie/{id}', tvUrl: 'https://vidcloud.icu/embed/tv/{id}/{season}/{episode}', active: true, icon: 'VC' }
       ]
     };
 
@@ -591,7 +600,7 @@
         case 'history': renderHistory(); break;
         case 'settings': renderSettings(); break;
         case 'mystuff': renderMyStuff(); break;
-        case 'plugins': if (route.id) renderExtensionBrowser(route.id); else renderPlugins(); break;
+        case 'plugins': if (route.id !== undefined) renderExtensionBrowser(route.id); else renderPlugins(); break;
         case 'apikeys': renderApiKeys(); break;
         case 'sources': renderSources(); break;
         default: renderHome();
@@ -660,7 +669,7 @@
       var adultBadge = item.adult ? '<div class="adult-badge">18+</div>' : '';
       var sourceBadge = sourceName ? '<div class="source-badge">' + sourceName + '</div>' : '';
       var itemData = JSON.stringify({id:item.id,title:item.title||item.name,poster_path:item.poster_path,media_type:mediaType,vote_average:item.vote_average,release_date:item.release_date||item.first_air_date,adult:item.adult,source:sourceName}).replace(/"/g, '&quot;');
-      return '<div class="grid-card" onclick="navigate(\'#/' + mediaType + '/' + item.id + '\')"><div class="grid-poster">' + adultBadge + sourceBadge + '<img src="' + imgUrl(item.poster_path, 'w342') + '" alt="' + title + '" loading="lazy"><button class="grid-bookmark ' + saved + '" data-bookmark-id="' + item.id + '" onclick="event.stopPropagation();toggleWatchlist(' + itemData + ')"><i class="fas fa-bookmark"></i></button></div><div class="grid-card-title">' + title + '</div><div class="grid-card-meta">' + year + ' &middot; <i class="fas fa-star" style="color:var(--accent-gold)"></i> ' + rating + '</div></div>';
+      return '<div class="grid-card" onclick="navigate(\'#/' + mediaType + '/' + item.id + '\')"><div class="grid-poster">' + adultBadge + sourceBadge + '<img src="' + imgUrl(item.poster_path, 'w342') + '" alt="' + title + '" loading="lazy"><button class="grid-bookmark ' + saved + '" data-bookmark-id="' + item.id + '" onclick="event.stopPropagation();toggleWatchlist(' + itemData + ')"><i class="fas fa-bookmark"></i></button></div><div class="grid-card-title">' + title + '</div><div class="grid-card-meta">' + year + ' · <i class="fas fa-star" style="color:var(--accent-gold)"></i> ' + rating + '</div></div>';
     }
 
     var heroInterval = null;
@@ -690,7 +699,7 @@
         { title: '🔥 Trending Now', endpoint: '/trending/all/week', type: 'movie', filter: function(i) { return !i.adult; } },
         { title: '🎬 Popular Movies', endpoint: '/movie/popular', type: 'movie', filter: function(i) { return !i.adult; } },
         { title: '📺 Trending TV Shows', endpoint: '/trending/tv/week', type: 'tv', filter: function(i) { return !i.adult; } },
-        { title: ' Top Anime', endpoint: '/discover/movie', params: { with_genres: '16', with_keywords: '210024', without_genres: '10749' }, type: 'movie', filter: function(i) { return !i.adult; } },
+        { title: '🎌 Top Anime', endpoint: '/discover/movie', params: { with_genres: '16', with_keywords: '210024', without_genres: '10749' }, type: 'movie', filter: function(i) { return !i.adult; } },
         { title: '🏆 Top Rated Movies', endpoint: '/movie/top_rated', type: 'movie', filter: function(i) { return !i.adult; } },
         { title: '🆕 Now Playing', endpoint: '/movie/now_playing', type: 'movie', filter: function(i) { return !i.adult; } },
         { title: '📡 On The Air (TV)', endpoint: '/tv/on_the_air', type: 'tv', filter: function(i) { return !i.adult; } },
@@ -714,7 +723,7 @@
         section.className = 'carousel-section';
         var cardsHTML = '';
         for (var ci = 0; ci < Math.min(filtered.length, 15); ci++) cardsHTML += carouselCardHTML(filtered[ci], row.type);
-        section.innerHTML = '<div class="carousel-header"><h2 class="carousel-title">' + row.title + '</h2><a class="carousel-see-all" href="javascript:void(0)" onclick="navigate(\'#/' + (row.title.includes('Adult') ? 'adult' : 'movies') + '\')">See All &rarr;</a></div><div class="carousel-track">' + cardsHTML + '</div>';
+        section.innerHTML = '<div class="carousel-header"><h2 class="carousel-title">' + row.title + '</h2><a class="carousel-see-all" href="javascript:void(0)" onclick="navigate(\'#/' + (row.title.includes('Adult') ? 'adult' : 'movies') + '\')">See All →</a></div><div class="carousel-track">' + cardsHTML + '</div>';
         container.appendChild(section);
       }
     }
@@ -848,11 +857,11 @@
         }
       }
       var castHTML = '';
-      if (cast.length) { castHTML = '<div class="detail-section"><h3 class="detail-section-title">Cast</h3><div class="cast-carousel">'; for (var ci = 0; ci < cast.length; ci++) { var c = cast[ci]; var photoSrc = c.profile_path ? imgUrl(c.profile_path, 'w185') : 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><rect fill="%231a1a2e" width="60" height="60"/><text x="30" y="35" text-anchor="middle" fill="%236b6b80" font-size="20">&#128100;</text></svg>'; castHTML += '<div class="cast-item"><div class="cast-photo"><img src="' + photoSrc + '" alt="' + c.name + '" loading="lazy"></div><div class="cast-name">' + c.name + '</div><div class="cast-character">' + (c.character || '') + '</div></div>'; } castHTML += '</div></div>'; }
+      if (cast.length) { castHTML = '<div class="detail-section"><h3 class="detail-section-title">Cast</h3><div class="cast-carousel">'; for (var ci = 0; ci < cast.length; ci++) { var c = cast[ci]; var photoSrc = c.profile_path ? imgUrl(c.profile_path, 'w185') : 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 60 60"><rect fill="%231a1a2e" width="60" height="60"/><text x="30" y="35" text-anchor="middle" fill="%236b6b80" font-size="20">👤</text></svg>'; castHTML += '<div class="cast-item"><div class="cast-photo"><img src="' + photoSrc + '" alt="' + c.name + '" loading="lazy"></div><div class="cast-name">' + c.name + '</div><div class="cast-character">' + (c.character || '') + '</div></div>'; } castHTML += '</div></div>'; }
       var similarHTML = '';
       if (similarItems.length) { similarHTML = '<div class="detail-section"><h3 class="detail-section-title">Similar</h3><div class="carousel-track">'; for (var si2 = 0; si2 < similarItems.length; si2++) similarHTML += carouselCardHTML(similarItems[si2], type); similarHTML += '</div></div>'; }
       var trailerBtnHTML = trailer ? '<button class="detail-action-secondary" onclick="playTrailer(\'' + trailer.key + '\')"><i class="fas fa-film"></i> Trailer</button>' : '';
-      main.innerHTML = '<div class="detail-page page-enter"><div class="detail-backdrop"><img src="' + imgUrl(detail.backdrop_path, 'w1280') + '" alt=""><div class="detail-backdrop-overlay"></div><div class="detail-backdrop-actions"><button class="detail-back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i></button><div class="detail-right-actions"><button class="detail-action-btn" onclick="shareContent(\'' + title.replace(/'/g, "\\'") + '\')"><i class="fas fa-share-alt"></i></button><button class="detail-action-btn ' + (saved ? 'saved' : '') + '" data-bookmark-id="' + detail.id + '" onclick="toggleWatchlistDetail(' + itemData + ')"><i class="fas fa-bookmark"></i></button></div></div></div><div class="detail-body"><div class="detail-poster"><img src="' + imgUrl(detail.poster_path, 'w342') + '" alt="' + title + '"></div><h1 class="detail-title">' + (detail.adult ? '<span style="color:#ff4444;font-size:0.7em">18+ </span>' : '') + title + '</h1>' + (originalTitle !== title ? '<div class="detail-original-title">' + originalTitle + '</div>' : '') + '<div class="detail-meta"><span class="detail-meta-item rating"><i class="fas fa-star"></i> ' + rating + '</span><span class="detail-meta-item"><i class="far fa-calendar"></i> ' + year + '</span>' + (runtime ? '<span class="detail-meta-item"><i class="far fa-clock"></i> ' + runtime + '</span>' : '') + '</div><div class="detail-genres">' + genres.map(function(g) { return '<span class="detail-genre">' + g + '</span>'; }).join('') + '</div>' + (tagline ? '<p class="detail-tagline">&ldquo;' + tagline + '&rdquo;</p>' : '') + '<div class="detail-actions"><button class="btn-play" onclick="navigate(\'#/player/' + type + '/' + id + '\')"><i class="fas fa-play"></i> Play Now</button>' + trailerBtnHTML + '<button class="detail-action-secondary ' + (saved ? 'saved' : '') + '" data-bookmark-id="' + detail.id + '" onclick="toggleWatchlistDetail(' + itemData + ')"><i class="fas fa-plus"></i> Watchlist</button></div><div class="detail-section"><h3 class="detail-section-title">Overview</h3><p class="detail-overview" id="detail-overview">' + overview + '</p>' + (overview.length > 200 ? '<button class="read-more-btn" onclick="toggleReadMore()">Read more</button>' : '') + '</div>' + castHTML + seasonsHTML + similarHTML + '</div></div>';
+      main.innerHTML = '<div class="detail-page page-enter"><div class="detail-backdrop"><img src="' + imgUrl(detail.backdrop_path, 'w1280') + '" alt=""><div class="detail-backdrop-overlay"></div><div class="detail-backdrop-actions"><button class="detail-back-btn" onclick="history.back()"><i class="fas fa-arrow-left"></i></button><div class="detail-right-actions"><button class="detail-action-btn" onclick="shareContent(\'' + title.replace(/'/g, "\\'") + '\')"><i class="fas fa-share-alt"></i></button><button class="detail-action-btn ' + (saved ? 'saved' : '') + '" data-bookmark-id="' + detail.id + '" onclick="toggleWatchlistDetail(' + itemData + ')"><i class="fas fa-bookmark"></i></button></div></div></div><div class="detail-body"><div class="detail-poster"><img src="' + imgUrl(detail.poster_path, 'w342') + '" alt="' + title + '"></div><h1 class="detail-title">' + (detail.adult ? '<span style="color:#ff4444;font-size:0.7em">18+ </span>' : '') + title + '</h1>' + (originalTitle !== title ? '<div class="detail-original-title">' + originalTitle + '</div>' : '') + '<div class="detail-meta"><span class="detail-meta-item rating"><i class="fas fa-star"></i> ' + rating + '</span><span class="detail-meta-item"><i class="far fa-calendar"></i> ' + year + '</span>' + (runtime ? '<span class="detail-meta-item"><i class="far fa-clock"></i> ' + runtime + '</span>' : '') + '</div><div class="detail-genres">' + genres.map(function(g) { return '<span class="detail-genre">' + g + '</span>'; }).join('') + '</div>' + (tagline ? '<p class="detail-tagline">"' + tagline + '"</p>' : '') + '<div class="detail-actions"><button class="btn-play" onclick="navigate(\'#/player/' + type + '/' + id + '\')"><i class="fas fa-play"></i> Play Now</button>' + trailerBtnHTML + '<button class="detail-action-secondary ' + (saved ? 'saved' : '') + '" data-bookmark-id="' + detail.id + '" onclick="toggleWatchlistDetail(' + itemData + ')"><i class="fas fa-plus"></i> Watchlist</button></div><div class="detail-section"><h3 class="detail-section-title">Overview</h3><p class="detail-overview" id="detail-overview">' + overview + '</p>' + (overview.length > 200 ? '<button class="read-more-btn" onclick="toggleReadMore()">Read more</button>' : '') + '</div>' + castHTML + seasonsHTML + similarHTML + '</div></div>';
       if (type === 'tv' && detail.seasons && detail.seasons.filter(function(s) { return s.season_number > 0; }).length) loadSeason(id, 1);
     }
 
@@ -870,15 +879,15 @@
       for (var i = 0; i < data.episodes.length; i++) {
         var ep = data.episodes[i];
         var stillSrc = ep.still_path ? imgUrl(ep.still_path, 'w300') : '';
-        html += '<div class="episode-item" onclick="navigate(\'#/player/tv/' + tvId + '/' + seasonNum + '/' + ep.episode_number + '\')"><div class="episode-thumb"><img src="' + stillSrc + '" alt="" loading="lazy"></div><div class="episode-info"><div class="episode-title">E' + ep.episode_number + ': ' + (ep.name || 'TBA') + '</div><div class="episode-meta">' + (ep.air_date || '') + (ep.runtime ? ' &middot; ' + ep.runtime + 'min' : '') + '</div><div class="episode-overview">' + (ep.overview || '') + '</div></div></div>';
+        html += '<div class="episode-item" onclick="navigate(\'#/player/tv/' + tvId + '/' + seasonNum + '/' + ep.episode_number + '\')"><div class="episode-thumb"><img src="' + stillSrc + '" alt="" loading="lazy"></div><div class="episode-info"><div class="episode-title">E' + ep.episode_number + ': ' + (ep.name || 'TBA') + '</div><div class="episode-meta">' + (ep.air_date || '') + (ep.runtime ? ' · ' + ep.runtime + 'min' : '') + '</div><div class="episode-overview">' + (ep.overview || '') + '</div></div></div>';
       }
       list.innerHTML = html;
     }
 
     function playTrailer(youtubeKey) { openModal('<div style="aspect-ratio:16/9;margin:-24px -24px 16px;border-radius:var(--radius-xl) var(--radius-xl) 0 0;overflow:hidden"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/' + youtubeKey + '?autoplay=1" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>'); }
 
-    // ===== PLAYER =====
-    var playerState = { visible: true, hideTimer: null, brightness: 100, volume: 100, isPlaying: true, touchStartX: 0, touchStartY: 0, touchSide: null, touchStartValue: 0 };
+    // ===== PLAYER - FIXED: Not fullscreen initially, source selector inside =====
+    var playerState = { visible: true, hideTimer: null, brightness: 100, volume: 100, isPlaying: true, touchStartX: 0, touchStartY: 0, touchSide: null, touchStartValue: 0, isFullscreen: false, currentSource: 0, sources: [] };
 
     async function renderPlayer(type, id, extra, extra2) {
       var main = document.getElementById('main-content');
@@ -911,6 +920,7 @@
         }
       }
 
+      // Build sources - FIXED: More reliable sources
       var sources = [];
       var activeSources = state.sources.filter(function(s) { return s.active; });
       for (var si = 0; si < activeSources.length; si++) {
@@ -926,11 +936,57 @@
 
       var overviewHTML = (detail && detail.overview) ? '<div style="padding:0 16px 16px"><div class="detail-section"><p class="detail-overview" style="font-size:0.85rem">' + detail.overview + '</p></div></div>' : '';
 
-      main.innerHTML = '<div class="player-page"><div class="player-container" id="player-container"><iframe id="player-iframe" src="' + (sources[0] ? sources[0].url : '') + '" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write; web-share" referrerpolicy="no-referrer-when-downgrade" sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-presentation"></iframe><div class="player-overlay visible" id="player-overlay"><div class="player-top-bar liquid-glass" style="border-radius:var(--radius-lg);margin:0 12px"><button class="player-back-btn liquid-glass" onclick="exitPlayer()"><i class="fas fa-arrow-left"></i></button><div class="player-title-display">' + title + ' - ' + subtitle + '</div><div class="player-top-actions"><button class="liquid-glass" onclick="shareCurrent()"><i class="fas fa-share-alt"></i></button><button class="liquid-glass" onclick="togglePlayerPanel(\'more\')"><i class="fas fa-ellipsis-v"></i></button></div></div><div class="player-center-controls"><button class="player-ctrl-btn liquid-glass" onclick="playerSkip(-10)"><i class="fas fa-undo"></i></button><button class="player-ctrl-btn main liquid-glass" id="player-play-btn" onclick="playerTogglePlay()"><i class="fas fa-play"></i></button><button class="player-ctrl-btn liquid-glass" onclick="playerSkip(10)"><i class="fas fa-redo"></i></button></div><div class="gesture-indicator left" id="gesture-left"><i class="fas fa-sun"></i><span id="gesture-left-val">100%</span></div><div class="gesture-indicator right" id="gesture-right"><i class="fas fa-volume-up"></i><span id="gesture-right-val">100%</span></div><div class="player-bottom-bar liquid-glass" style="border-radius:var(--radius-lg);margin:0 12px"><div class="player-bottom-actions"><button onclick="togglePlayerPanel(\'episodes\')"><i class="fas fa-list"></i></button><button onclick="playerSkip(-10)"><i class="fas fa-undo"></i></button><button onclick="playerTogglePlay()" id="player-play-btn2"><i class="fas fa-play"></i></button><button onclick="playerSkip(10)"><i class="fas fa-redo"></i></button><button onclick="togglePlayerPanel(\'settings\')"><i class="fas fa-cog"></i></button><button onclick="togglePlayerPanel(\'subtitles\')"><i class="fas fa-closed-captioning"></i></button><button onclick="togglePlayerPanel(\'audio\')"><i class="fas fa-music"></i></button><button onclick="toggleFullscreen()"><i class="fas fa-expand"></i></button></div></div></div><div class="player-panel" id="panel-episodes"><div class="player-panel-handle"></div><h3>Episodes</h3><div id="panel-episodes-list"></div></div><div class="player-panel" id="panel-settings"><div class="player-panel-handle"></div><h3>Player Settings</h3><div class="subtitle-settings"><label>Video Quality</label><select onchange="changeQuality(this.value)"><option value="auto" selected>Auto</option><option value="1080">1080p</option><option value="720">720p</option><option value="480">480p</option></select><label>Playback Speed</label><select onchange="changeSpeed(this.value)"><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option value="1" selected>1x (Normal)</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option></select><label>Aspect Ratio</label><select onchange="changeAspect(this.value)"><option value="contain" selected>Fit (Contain)</option><option value="cover">Fill (Cover)</option><option value="fill">Stretch</option></select></div></div><div class="player-panel" id="panel-subtitles"><div class="player-panel-handle"></div><h3>Subtitle Settings</h3><div class="subtitle-settings"><label>Font Size: <span id="sub-size-val">100%</span></label><input type="range" min="50" max="200" value="100" oninput="document.getElementById(\'sub-size-val\').textContent=this.value+\'%\'"><label>Text Color</label><input type="color" value="#ffffff"><label>Background Color</label><input type="color" value="#000000"><label>Background Opacity: <span id="sub-bg-val">50%</span></label><input type="range" min="0" max="100" value="50" oninput="document.getElementById(\'sub-bg-val\').textContent=this.value+\'%\'"><label>Position</label><select><option value="bottom" selected>Bottom</option><option value="top">Top</option><option value="middle">Middle</option></select></div></div><div class="player-panel" id="panel-audio"><div class="player-panel-handle"></div><h3>Audio Tracks</h3><div class="panel-option active"><div class="panel-option-icon"><i class="fas fa-volume-up"></i></div><div class="panel-option-info"><div class="panel-option-name">Default Audio</div><div class="panel-option-desc">Original language</div></div></div><div class="panel-option"><div class="panel-option-icon"><i class="fas fa-language"></i></div><div class="panel-option-info"><div class="panel-option-name">English Dub</div><div class="panel-option-desc">If available</div></div></div><div class="panel-option"><div class="panel-option-icon"><i class="fas fa-language"></i></div><div class="panel-option-info"><div class="panel-option-name">Hindi Dub</div><div class="panel-option-desc">If available</div></div></div></div><div class="player-panel" id="panel-more"><div class="player-panel-handle"></div><h3>More Options</h3><div class="panel-option" onclick="openInNewTab()"><div class="panel-option-icon"><i class="fas fa-external-link-alt"></i></div><div class="panel-option-info"><div class="panel-option-name">Open in New Tab</div><div class="panel-option-desc">If embed fails</div></div></div><div class="panel-option" onclick="toggleFullscreen()"><div class="panel-option-icon"><i class="fas fa-expand"></i></div><div class="panel-option-info"><div class="panel-option-name">Fullscreen</div></div></div><div class="panel-option" onclick="reportIssue()"><div class="panel-option-icon"><i class="fas fa-flag"></i></div><div class="panel-option-info"><div class="panel-option-name">Report Issue</div></div></div></div></div><div class="player-source-tabs" id="source-tabs">' + sourceTabsHTML + '</div><div class="player-info"><h2 class="player-title">' + title + '</h2><p class="player-subtitle">' + subtitle + '</p></div>' + episodeChipsHTML + '<button class="btn-mark-watched" onclick="markWatched(this)"><i class="fas fa-check"></i> Mark as Watched</button>' + overviewHTML + '</div>';
+      // FIXED: Player not fullscreen initially
+      main.innerHTML = '<div class="player-page page-enter">' +
+        '<div class="player-video-container" id="player-video-container">' +
+          '<iframe id="player-iframe" src="' + (sources[0] ? sources[0].url : '') + '" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write; web-share" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
+          '<div class="player-overlay visible" id="player-overlay">' +
+            '<div class="player-top-bar liquid-glass" style="border-radius:var(--radius-lg);margin:0 12px">' +
+              '<button class="player-back-btn liquid-glass" onclick="exitPlayer()"><i class="fas fa-arrow-left"></i></button>' +
+              '<div class="player-title-display">' + title + ' - ' + subtitle + '</div>' +
+              '<div class="player-top-actions">' +
+                '<button class="liquid-glass" onclick="shareCurrent()"><i class="fas fa-share-alt"></i></button>' +
+                '<button class="liquid-glass" onclick="togglePlayerFullscreen()"><i class="fas fa-expand"></i></button>' +
+              '</div>' +
+            '</div>' +
+            '<div class="player-center-controls">' +
+              '<button class="player-ctrl-btn liquid-glass" onclick="playerSkip(-10)"><i class="fas fa-undo"></i></button>' +
+              '<button class="player-ctrl-btn main liquid-glass" id="player-play-btn" onclick="playerTogglePlay()"><i class="fas fa-play"></i></button>' +
+              '<button class="player-ctrl-btn liquid-glass" onclick="playerSkip(10)"><i class="fas fa-redo"></i></button>' +
+            '</div>' +
+            '<div class="gesture-indicator left" id="gesture-left"><i class="fas fa-sun"></i><span id="gesture-left-val">100%</span></div>' +
+            '<div class="gesture-indicator right" id="gesture-right"><i class="fas fa-volume-up"></i><span id="gesture-right-val">100%</span></div>' +
+            '<div class="player-bottom-bar liquid-glass" style="border-radius:var(--radius-lg);margin:0 12px">' +
+              '<div class="player-bottom-actions">' +
+                '<button onclick="togglePlayerPanel(\'episodes\')"><i class="fas fa-list"></i></button>' +
+                '<button onclick="playerSkip(-10)"><i class="fas fa-undo"></i></button>' +
+                '<button onclick="playerTogglePlay()" id="player-play-btn2"><i class="fas fa-play"></i></button>' +
+                '<button onclick="playerSkip(10)"><i class="fas fa-redo"></i></button>' +
+                '<button onclick="togglePlayerPanel(\'settings\')"><i class="fas fa-cog"></i></button>' +
+                '<button onclick="togglePlayerPanel(\'subtitles\')"><i class="fas fa-closed-captioning"></i></button>' +
+                '<button onclick="togglePlayerPanel(\'audio\')"><i class="fas fa-music"></i></button>' +
+                '<button onclick="togglePlayerFullscreen()"><i class="fas fa-expand"></i></button>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="player-panel" id="panel-episodes"><div class="player-panel-handle"></div><h3>Episodes</h3><div id="panel-episodes-list"></div></div>' +
+          '<div class="player-panel" id="panel-settings"><div class="player-panel-handle"></div><h3>Player Settings</h3><div class="subtitle-settings"><label>Video Quality</label><select onchange="changeQuality(this.value)"><option value="auto" selected>Auto</option><option value="1080">1080p</option><option value="720">720p</option><option value="480">480p</option></select><label>Playback Speed</label><select onchange="changeSpeed(this.value)"><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option value="1" selected>1x (Normal)</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option></select><label>Aspect Ratio</label><select onchange="changeAspect(this.value)"><option value="contain" selected>Fit (Contain)</option><option value="cover">Fill (Cover)</option><option value="fill">Stretch</option></select></div></div>' +
+          '<div class="player-panel" id="panel-subtitles"><div class="player-panel-handle"></div><h3>Subtitle Settings</h3><div class="subtitle-settings"><label>Font Size: <span id="sub-size-val">100%</span></label><input type="range" min="50" max="200" value="100" oninput="document.getElementById(\'sub-size-val\').textContent=this.value+\'%\'"><label>Text Color</label><input type="color" value="#ffffff"><label>Background Color</label><input type="color" value="#000000"><label>Background Opacity: <span id="sub-bg-val">50%</span></label><input type="range" min="0" max="100" value="50" oninput="document.getElementById(\'sub-bg-val\').textContent=this.value+\'%\'"><label>Position</label><select><option value="bottom" selected>Bottom</option><option value="top">Top</option><option value="middle">Middle</option></select></div></div>' +
+          '<div class="player-panel" id="panel-audio"><div class="player-panel-handle"></div><h3>Audio Tracks</h3><div class="panel-option active"><div class="panel-option-icon"><i class="fas fa-volume-up"></i></div><div class="panel-option-info"><div class="panel-option-name">Default Audio</div><div class="panel-option-desc">Original language</div></div></div><div class="panel-option"><div class="panel-option-icon"><i class="fas fa-language"></i></div><div class="panel-option-info"><div class="panel-option-name">English Dub</div><div class="panel-option-desc">If available</div></div></div><div class="panel-option"><div class="panel-option-icon"><i class="fas fa-language"></i></div><div class="panel-option-info"><div class="panel-option-name">Hindi Dub</div><div class="panel-option-desc">If available</div></div></div></div>' +
+          '<div class="player-panel" id="panel-more"><div class="player-panel-handle"></div><h3>More Options</h3><div class="panel-option" onclick="openInNewTab()"><div class="panel-option-icon"><i class="fas fa-external-link-alt"></i></div><div class="panel-option-info"><div class="panel-option-name">Open in New Tab</div><div class="panel-option-desc">If embed fails</div></div></div><div class="panel-option" onclick="togglePlayerFullscreen()"><div class="panel-option-icon"><i class="fas fa-expand"></i></div><div class="panel-option-info"><div class="panel-option-name">Fullscreen</div></div></div><div class="panel-option" onclick="reportIssue()"><div class="panel-option-icon"><i class="fas fa-flag"></i></div><div class="panel-option-info"><div class="panel-option-name">Report Issue</div></div></div></div>' +
+        '</div>' +
+        '<div style="padding:0 16px"><h3 style="font-size:1rem;margin-bottom:12px">Select Source</h3></div>' +
+        '<div class="player-source-tabs" id="source-tabs">' + sourceTabsHTML + '</div>' +
+        '<div class="player-info"><h2 class="player-title">' + title + '</h2><p class="player-subtitle">' + subtitle + '</p></div>' +
+        episodeChipsHTML +
+        '<button class="btn-mark-watched" onclick="markWatched(this)"><i class="fas fa-check"></i> Mark as Watched</button>' +
+        overviewHTML +
+      '</div>';
 
       playerState.sources = sources;
       playerState.currentSource = 0;
       playerState.visible = true;
+      playerState.isFullscreen = false;
       setupPlayerGestures();
       startAutoHide();
 
@@ -952,7 +1008,7 @@
     }
 
     function setupPlayerGestures() {
-      var container = document.getElementById('player-container');
+      var container = document.getElementById('player-video-container');
       if (!container) return;
       container.addEventListener('touchstart', function(e) { playerState.touchStartX = e.touches[0].clientX; playerState.touchStartY = e.touches[0].clientY; playerState.touchSide = e.touches[0].clientX < window.innerWidth / 2 ? 'left' : 'right'; playerState.touchStartValue = playerState.touchSide === 'left' ? playerState.brightness : playerState.volume; }, { passive: true });
       container.addEventListener('touchmove', function(e) {
@@ -973,12 +1029,32 @@
     function startAutoHide() { if (playerState.hideTimer) clearTimeout(playerState.hideTimer); playerState.hideTimer = setTimeout(function() { playerState.visible = false; var overlay = document.getElementById('player-overlay'); if (overlay) overlay.classList.remove('visible'); }, 5000); }
     function playerTogglePlay() { playerState.isPlaying = !playerState.isPlaying; var icons = document.querySelectorAll('#player-play-btn i, #player-play-btn2 i'); for (var i = 0; i < icons.length; i++) icons[i].className = playerState.isPlaying ? 'fas fa-pause' : 'fas fa-play'; }
     function playerSkip(seconds) { showToast((seconds > 0 ? '+' : '') + seconds + ' seconds', 'info'); }
-    function switchPlayerSource(idx, url) { playerState.currentSource = idx; var tabs = document.querySelectorAll('.source-tab'); for (var i = 0; i < tabs.length; i++) tabs[i].classList.toggle('active', i === idx); var iframe = document.getElementById('player-iframe'); if (iframe) iframe.src = url; showToast('Switched to ' + playerState.sources[idx].name, 'info'); }
+    function switchPlayerSource(idx, url) {
+      playerState.currentSource = idx;
+      var tabs = document.querySelectorAll('.source-tab');
+      for (var i = 0; i < tabs.length; i++) tabs[i].classList.toggle('active', i === idx);
+      var iframe = document.getElementById('player-iframe');
+      if (iframe) {
+        iframe.src = url;
+        showToast('Switched to ' + playerState.sources[idx].name, 'info');
+      }
+    }
     function togglePlayerPanel(name) { var panels = document.querySelectorAll('.player-panel'); for (var i = 0; i < panels.length; i++) { if (panels[i].id === 'panel-' + name) panels[i].classList.toggle('open'); else panels[i].classList.remove('open'); } }
     function changeQuality(val) { showToast('Quality: ' + val, 'info'); }
     function changeSpeed(val) { showToast('Speed: ' + val + 'x', 'info'); }
     function changeAspect(val) { var iframe = document.getElementById('player-iframe'); if (iframe) iframe.style.objectFit = val; }
-    function toggleFullscreen() { var el = document.documentElement; if (!document.fullscreenElement) el.requestFullscreen().catch(function(){}); else document.exitFullscreen(); }
+    function togglePlayerFullscreen() {
+      var container = document.getElementById('player-video-container');
+      if (!container) return;
+      playerState.isFullscreen = !playerState.isFullscreen;
+      if (playerState.isFullscreen) {
+        container.classList.add('fullscreen');
+        if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function(){});
+      } else {
+        container.classList.remove('fullscreen');
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
     function shareCurrent() { if (navigator.share) navigator.share({ title: 'StreamVault', url: window.location.href }); else { navigator.clipboard.writeText(window.location.href); showToast('Link copied!', 'success'); } }
     function openInNewTab() { var iframe = document.getElementById('player-iframe'); if (iframe && iframe.src) window.open(iframe.src, '_blank'); }
     function reportIssue() { showToast('Issue reported. Thank you!', 'success'); }
@@ -1115,7 +1191,6 @@
       '</div></div>';
     }
 
-    // ===== PLUGINS / EXTENSIONS =====
     function renderPlugins() {
       var main = document.getElementById('main-content');
       var reposHTML = '';
@@ -1129,7 +1204,7 @@
       main.innerHTML = '<div class="settings-page page-enter"><div class="page-header"><h1 class="page-title">Plugins & Extensions</h1></div><div style="padding:0 16px"><div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:14px;margin-bottom:16px"><p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5"><i class="fas fa-info-circle" style="color:var(--accent);margin-right:6px"></i>Add plugin repositories (like CloudStream) to get more streaming sources. Tap a repo to browse and install individual plugins.</p></div><h3 style="font-size:0.95rem;margin-bottom:10px"><i class="fab fa-github" style="color:var(--accent);margin-right:6px"></i>Repositories</h3>' + reposHTML + '<h3 style="font-size:0.95rem;margin:20px 0 10px"><i class="fas fa-puzzle-piece" style="color:var(--accent);margin-right:6px"></i>Installed Plugins (' + state.installedPlugins.length + ')</h3>' + installedHTML + '</div><button class="add-repo-btn" onclick="openAddRepoModal()"><i class="fas fa-plus"></i> Add Repo</button><div class="settings-about" style="margin-top:40px"><p>Plugin system inspired by CloudStream</p></div></div>';
     }
 
-    function openAddRepoModal() { openModal('<h3 style="margin-bottom:12px">Add Plugin Repository</h3><p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:16px">Enter a GitHub repository URL. The app will fetch available plugins.</p><input class="api-key-input" id="repo-url-input" type="url" placeholder="https://github.com/user/repo" style="margin-bottom:8px"><input class="api-key-input" id="repo-name-input" type="text" placeholder="Repository name (optional)" style="margin-bottom:16px"><div class="filter-actions"><button class="filter-reset" onclick="document.getElementById(\'modal-overlay\').classList.remove(\'active\')">Cancel</button><button class="filter-apply" onclick="addRepo()">Add Repository</button></div>'); }
+    function openAddRepoModal() { openModal('<h3 style="margin-bottom:12px">Add Plugin Repository</h3><p style="font-size:0.8rem;color:var(--text-secondary);margin-bottom:16px">Enter a GitHub repository URL or direct JSON file URL.</p><input class="api-key-input" id="repo-url-input" type="url" placeholder="https://github.com/user/repo or https://raw.githubusercontent.com/.../plugins.json" style="margin-bottom:8px"><input class="api-key-input" id="repo-name-input" type="text" placeholder="Repository name (optional)" style="margin-bottom:16px"><div class="filter-actions"><button class="filter-reset" onclick="document.getElementById(\'modal-overlay\').classList.remove(\'active\')">Cancel</button><button class="filter-apply" onclick="addRepo()">Add Repository</button></div>'); }
 
     async function addRepo() {
       var urlInput = document.getElementById('repo-url-input');
@@ -1143,14 +1218,52 @@
       try {
         var rawUrl = url;
         if (url.includes('github.com') && !url.includes('raw.githubusercontent.com')) rawUrl = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
+        
+        // FIXED: If URL ends with .json, fetch it directly
+        var pluginsUrl = rawUrl;
+        if (!rawUrl.endsWith('.json')) {
+          pluginsUrl = rawUrl.replace(/\/$/, '') + '/plugins.json';
+        }
+        
         var plugins = [];
-        var pluginsUrl = rawUrl.replace(/\/$/, '') + '/plugins.json';
         var res = await fetch(pluginsUrl);
-        if (res.ok) { var data = await res.json(); if (Array.isArray(data)) plugins = data; else if (data.plugins) plugins = data.plugins; else if (data.sources) plugins = data.sources; }
-        if (plugins.length === 0) { var commonFiles = ['extensions.json', 'providers.json', 'sources.json', 'index.json']; for (var cf = 0; cf < commonFiles.length; cf++) { var tryUrl = rawUrl.replace(/\/$/, '') + '/' + commonFiles[cf]; try { var res2 = await fetch(tryUrl); if (res2.ok) { var data2 = await res2.json(); if (Array.isArray(data2)) plugins = data2; else if (data2.plugins) plugins = data2.plugins; else if (data2.sources) plugins = data2.sources; if (plugins.length > 0) break; } } catch(e) {} } }
+        if (res.ok) {
+          var data = await res.json();
+          // Handle different JSON formats
+          if (Array.isArray(data)) plugins = data;
+          else if (data.plugins && Array.isArray(data.plugins)) plugins = data.plugins;
+          else if (data.sources && Array.isArray(data.sources)) plugins = data.sources;
+          else if (data.extensions && Array.isArray(data.extensions)) plugins = data.extensions;
+          else {
+            // If it's a single plugin object
+            plugins = [data];
+          }
+        }
+        
+        // Try other common filenames if no plugins found
+        if (plugins.length === 0 && !rawUrl.endsWith('.json')) {
+          var commonFiles = ['extensions.json', 'providers.json', 'sources.json', 'index.json', 'repo.json'];
+          for (var cf = 0; cf < commonFiles.length; cf++) {
+            var tryUrl = rawUrl.replace(/\/$/, '') + '/' + commonFiles[cf];
+            try {
+              var res2 = await fetch(tryUrl);
+              if (res2.ok) {
+                var data2 = await res2.json();
+                if (Array.isArray(data2)) plugins = data2;
+                else if (data2.plugins) plugins = data2.plugins;
+                else if (data2.sources) plugins = data2.sources;
+                else if (data2.extensions) plugins = data2.extensions;
+                if (plugins.length > 0) break;
+              }
+            } catch(e) {}
+          }
+        }
+        
+        // If still no plugins, create a default
         if (plugins.length === 0) {
           plugins = [{ name: name || url.split('/').pop(), description: 'Plugin from ' + url, sources: [{ id: (name || url.split('/').pop()).toLowerCase().replace(/\s/g, ''), name: name || url.split('/').pop(), movieUrl: 'https://vidsrc.xyz/embed/movie/{id}', tvUrl: 'https://vidsrc.xyz/embed/tv/{id}/{season}/{episode}' }] }];
         }
+        
         var processedPlugins = [];
         for (var i = 0; i < plugins.length; i++) {
           var p = plugins[i];
@@ -1163,20 +1276,26 @@
             size: p.size || '10 kB',
             adult: p.adult || false,
             category: p.category || (p.type === 'tv' ? 'tv' : p.type === 'anime' ? 'anime' : 'movie'),
-            icon: p.icon || p.name ? (p.name || 'P').charAt(0).toUpperCase() : 'P',
+            icon: p.icon || (p.name ? p.name.charAt(0).toUpperCase() : 'P'),
             sources: p.sources || (p.movieUrl ? [{ id: p.id || p.name, name: p.name, movieUrl: p.movieUrl, tvUrl: p.tvUrl }] : []),
             installed: false
           });
         }
+        
         var repo = { name: name || url.split('/').pop(), url: url, plugins: processedPlugins, addedAt: Date.now() };
         state.pluginRepos.push(repo);
         storage.set('pluginRepos', state.pluginRepos);
         showToast('Repository added! ' + processedPlugins.length + ' plugins found.', 'success');
         renderPlugins();
-      } catch (e) { showToast('Could not fetch repo. Added as manual plugin.', 'info'); var repo = { name: name || url.split('/').pop(), url: url, plugins: [{ name: name || 'Plugin', sources: [{ id: 'manual', name: name || 'Plugin', movieUrl: 'https://vidsrc.xyz/embed/movie/{id}', tvUrl: 'https://vidsrc.xyz/embed/tv/{id}/{season}/{episode}' }] }], addedAt: Date.now() }; state.pluginRepos.push(repo); storage.set('pluginRepos', state.pluginRepos); renderPlugins(); }
+      } catch (e) {
+        showToast('Could not fetch repo. Added as manual plugin.', 'info');
+        var repo = { name: name || url.split('/').pop(), url: url, plugins: [{ name: name || 'Plugin', sources: [{ id: 'manual', name: name || 'Plugin', movieUrl: 'https://vidsrc.xyz/embed/movie/{id}', tvUrl: 'https://vidsrc.xyz/embed/tv/{id}/{season}/{episode}' }] }], addedAt: Date.now() };
+        state.pluginRepos.push(repo);
+        storage.set('pluginRepos', state.pluginRepos);
+        renderPlugins();
+      }
     }
 
-    // Extension Browser (CloudStream-like)
     var extBrowserTab = 'movie';
     async function renderExtensionBrowser(repoIndex) {
       var repo = state.pluginRepos[parseInt(repoIndex)];
@@ -1245,7 +1364,7 @@
       storage.set('installedPlugins', state.installedPlugins);
       showToast('Uninstalled: ' + name, 'info');
       var route = parseRoute();
-      if (route.id) renderExtensionBrowser(route.id);
+      if (route.id !== undefined) renderExtensionBrowser(route.id);
       else renderPlugins();
     }
 
@@ -1261,7 +1380,6 @@
 
     function removeRepo(index) { state.pluginRepos.splice(index, 1); storage.set('pluginRepos', state.pluginRepos); showToast('Repository removed', 'info'); renderPlugins(); }
 
-    // ===== API KEYS WITH TEST =====
     function renderApiKeys() {
       var main = document.getElementById('main-content');
       var tmdbStatus = state.apiKeys.tmdb ? (state.apiKeys.tmdb === CONFIG.DEFAULT_TMDB_KEY ? 'Default' : 'Custom') : 'Not set';
@@ -1356,7 +1474,7 @@
       var accents = ['#e50914', '#2196f3', '#9c27b0', '#4caf50', '#f5c518'];
       var themeHTML = ''; for (var i = 0; i < themes.length; i++) { var t = themes[i]; themeHTML += '<button class="chip ' + (state.theme === t ? 'active' : '') + '" onclick="setTheme(\'' + t + '\')" style="font-size:0.75rem;padding:6px 12px">' + t.charAt(0).toUpperCase() + t.slice(1) + '</button>'; }
       var accentHTML = ''; for (var j = 0; j < accents.length; j++) { var c = accents[j]; accentHTML += '<div class="accent-dot ' + (state.accent === c ? 'active' : '') + '" style="background:' + c + '" onclick="setAccent(\'' + c + '\')"></div>'; }
-      main.innerHTML = '<div class="settings-page page-enter"><div class="page-header"><h1 class="page-title">Settings</h1></div><div class="settings-group"><div class="settings-group-title">Appearance</div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-palette"></i><span class="settings-item-label">Theme</span></div><div style="display:flex;gap:8px">' + themeHTML + '</div></div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-circle"></i><span class="settings-item-label">Accent Color</span></div><div class="accent-colors">' + accentHTML + '</div></div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-gem"></i><span class="settings-item-label">Liquid Glass Effect</span></div><div class="toggle-switch ' + (state.liquidGlass ? 'active' : '') + '" onclick="toggleLiquidGlass()"></div></div></div><div class="settings-group"><div class="settings-group-title">Content</div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-fire" style="color:#ff4444"></i><span class="settings-item-label">18+ Adult Content</span></div><div class="toggle-switch ' + (state.showAdult ? 'active' : '') + '" onclick="toggleAdult()"></div></div></div><div class="settings-group"><div class="settings-group-title">Quick Access</div><button class="settings-btn" onclick="navigate(\'#/plugins\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-puzzle-piece" style="color:var(--accent);width:20px"></i> Plugins (' + state.installedPlugins.length + ')</button><button class="settings-btn" onclick="navigate(\'#/sources\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-server" style="color:var(--accent);width:20px"></i> Stream Sources</button><button class="settings-btn" onclick="navigate(\'#/apikeys\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-key" style="color:var(--accent);width:20px"></i> API Keys</button></div><div class="settings-group"><div class="settings-group-title">Data</div><button class="settings-btn danger" onclick="if(confirm(\'Clear watchlist?\')){state.watchlist=[];storage.set(\'watchlist\',[]);showToast(\'Cleared\',\'info\');renderSettings()}"><i class="fas fa-trash"></i> Clear Watchlist</button><button class="settings-btn danger" onclick="if(confirm(\'Clear history?\')){clearHistory()}"><i class="fas fa-trash"></i> Clear History</button><button class="settings-btn" onclick="exportData()"><i class="fas fa-download"></i> Export Data</button><button class="settings-btn" onclick="document.getElementById(\'import-file\').click()"><i class="fas fa-upload"></i> Import Data</button><input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)"></div><div class="settings-about"><p><strong>StreamVault</strong> v3.1.0</p><p style="margin-top:8px">This product uses the TMDB API but is not endorsed by TMDB.</p><p style="margin-top:8px">Plugin system inspired by CloudStream</p><p style="margin-top:8px">Installable as PWA - Add to Home Screen</p></div></div>';
+      main.innerHTML = '<div class="settings-page page-enter"><div class="page-header"><h1 class="page-title">Settings</h1></div><div class="settings-group"><div class="settings-group-title">Appearance</div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-palette"></i><span class="settings-item-label">Theme</span></div><div style="display:flex;gap:8px">' + themeHTML + '</div></div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-circle"></i><span class="settings-item-label">Accent Color</span></div><div class="accent-colors">' + accentHTML + '</div></div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-gem"></i><span class="settings-item-label">Liquid Glass Effect</span></div><div class="toggle-switch ' + (state.liquidGlass ? 'active' : '') + '" onclick="toggleLiquidGlass()"></div></div></div><div class="settings-group"><div class="settings-group-title">Content</div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-fire" style="color:#ff4444"></i><span class="settings-item-label">18+ Adult Content</span></div><div class="toggle-switch ' + (state.showAdult ? 'active' : '') + '" onclick="toggleAdult()"></div></div></div><div class="settings-group"><div class="settings-group-title">Quick Access</div><button class="settings-btn" onclick="navigate(\'#/plugins\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-puzzle-piece" style="color:var(--accent);width:20px"></i> Plugins (' + state.installedPlugins.length + ')</button><button class="settings-btn" onclick="navigate(\'#/sources\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-server" style="color:var(--accent);width:20px"></i> Stream Sources</button><button class="settings-btn" onclick="navigate(\'#/apikeys\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-key" style="color:var(--accent);width:20px"></i> API Keys</button></div><div class="settings-group"><div class="settings-group-title">Data</div><button class="settings-btn danger" onclick="if(confirm(\'Clear watchlist?\')){state.watchlist=[];storage.set(\'watchlist\',[]);showToast(\'Cleared\',\'info\');renderSettings()}"><i class="fas fa-trash"></i> Clear Watchlist</button><button class="settings-btn danger" onclick="if(confirm(\'Clear history?\')){clearHistory()}"><i class="fas fa-trash"></i> Clear History</button><button class="settings-btn" onclick="exportData()"><i class="fas fa-download"></i> Export Data</button><button class="settings-btn" onclick="document.getElementById(\'import-file\').click()"><i class="fas fa-upload"></i> Import Data</button><input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)"></div><div class="settings-about"><p><strong>StreamVault</strong> v3.2.0</p><p style="margin-top:8px">This product uses the TMDB API but is not endorsed by TMDB.</p><p style="margin-top:8px">Plugin system inspired by CloudStream</p><p style="margin-top:8px">Installable as PWA - Add to Home Screen</p></div></div>';
     }
 
     function setTheme(theme) { state.theme = theme; storage.set('theme', theme); applyTheme(); renderSettings(); }
@@ -1367,18 +1485,73 @@
     function exportData() { var data = { watchlist: state.watchlist, history: state.history, recentSearches: state.recentSearches, pluginRepos: state.pluginRepos, installedPlugins: state.installedPlugins, sources: state.sources, apiKeys: state.apiKeys, showAdult: state.showAdult, liquidGlass: state.liquidGlass, theme: state.theme, accent: state.accent }; var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); var url = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = url; a.download = 'streamvault-data.json'; a.click(); URL.revokeObjectURL(url); showToast('Data exported!', 'success'); }
     function importData(event) { var file = event.target.files[0]; if (!file) return; var reader = new FileReader(); reader.onload = function(e) { try { var data = JSON.parse(e.target.result); if (data.watchlist) { state.watchlist = data.watchlist; storage.set('watchlist', data.watchlist); } if (data.history) { state.history = data.history; storage.set('history', data.history); } if (data.recentSearches) { state.recentSearches = data.recentSearches; storage.set('recentSearches', data.recentSearches); } if (data.pluginRepos) { state.pluginRepos = data.pluginRepos; storage.set('pluginRepos', data.pluginRepos); } if (data.installedPlugins) { state.installedPlugins = data.installedPlugins; storage.set('installedPlugins', data.installedPlugins); } if (data.sources) { state.sources = data.sources; storage.set('sources', data.sources); } if (data.apiKeys) { state.apiKeys = data.apiKeys; storage.set('apiKeys', data.apiKeys); } if (data.showAdult !== undefined) { state.showAdult = data.showAdult; storage.set('showAdult', state.showAdult); } if (data.liquidGlass !== undefined) { state.liquidGlass = data.liquidGlass; storage.set('liquidGlass', state.liquidGlass); } if (data.theme) { state.theme = data.theme; storage.set('theme', data.theme); } if (data.accent) { state.accent = data.accent; storage.set('accent', data.accent); } applyTheme(); showToast('Data imported!', 'success'); renderSettings(); } catch(err) { showToast('Invalid file', 'error'); } }; reader.readAsText(file); }
 
-    // PWA Install
+    // PWA Install - FIXED
     var deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); deferredPrompt = e; });
-    window.addEventListener('appinstalled', function() { showToast('App installed!', 'success'); });
+    window.addEventListener('beforeinstallprompt', function(e) {
+      e.preventDefault();
+      deferredPrompt = e;
+      document.getElementById('install-prompt').classList.add('show');
+    });
+    window.addEventListener('appinstalled', function() {
+      showToast('App installed successfully!', 'success');
+      document.getElementById('install-prompt').classList.remove('show');
+    });
+    function installApp() {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then(function(choiceResult) {
+          if (choiceResult.outcome === 'accepted') {
+            showToast('Installing...', 'success');
+          }
+          deferredPrompt = null;
+          document.getElementById('install-prompt').classList.remove('show');
+        });
+      } else {
+        showToast('Use browser menu to install (⋮ → Add to Home Screen)', 'info');
+      }
+    }
+    function dismissInstall() { document.getElementById('install-prompt').classList.remove('show'); }
 
-    // Service Worker
+    // Service Worker - FIXED
     if ('serviceWorker' in navigator) {
-      var swCode = 'self.addEventListener("install",function(e){self.skipWaiting()});self.addEventListener("activate",function(e){e.waitUntil(self.clients.claim())});self.addEventListener("fetch",function(e){if(e.request.method==="GET"){e.respondWith(caches.open("streamvault-v3").then(function(cache){return cache.match(e.request).then(function(response){return response||fetch(e.request).then(function(r){if(r&&r.status===200)cache.put(e.request,r.clone());return r}).catch(function(){return response})})}))}});';
+      var swCode = 'self.addEventListener("install",function(e){self.skipWaiting()});self.addEventListener("activate",function(e){e.waitUntil(self.clients.claim())});self.addEventListener("fetch",function(e){if(e.request.method==="GET"){e.respondWith(caches.open("streamvault-v4").then(function(cache){return cache.match(e.request).then(function(response){return response||fetch(e.request).then(function(r){if(r&&r.status===200)cache.put(e.request,r.clone());return r}).catch(function(){return response})})}))}});';
       var swBlob = new Blob([swCode], { type: 'application/javascript' });
       var swUrl = URL.createObjectURL(swBlob);
-      navigator.serviceWorker.register(swUrl).catch(function() {});
+      navigator.serviceWorker.register(swUrl).then(function(reg) {
+        console.log('SW registered');
+      }).catch(function(err) {
+        console.log('SW registration failed:', err);
+      });
     }
+
+    // Create manifest dynamically - FIXED
+    var manifest = {
+      name: 'StreamVault',
+      short_name: 'StreamVault',
+      start_url: './',
+      display: 'standalone',
+      background_color: '#0a0a0f',
+      theme_color: '#e50914',
+      orientation: 'any',
+      icons: [
+        {
+          src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect fill="%230a0a0f" width="192" height="192" rx="40"/><text x="96" y="130" text-anchor="middle" fill="%23e50914" font-size="80" font-weight="800" font-family="Arial">SV</text></svg>',
+          sizes: '192x192',
+          type: 'image/svg+xml'
+        },
+        {
+          src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect fill="%230a0a0f" width="512" height="512" rx="100"/><text x="256" y="340" text-anchor="middle" fill="%23e50914" font-size="200" font-weight="800" font-family="Arial">SV</text></svg>',
+          sizes: '512x512',
+          type: 'image/svg+xml'
+        }
+      ]
+    };
+    var manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
+    var manifestUrl = URL.createObjectURL(manifestBlob);
+    var manifestLink = document.createElement('link');
+    manifestLink.rel = 'manifest';
+    manifestLink.href = manifestUrl;
+    document.head.appendChild(manifestLink);
 
     function init() { applyTheme(); if (!window.location.hash) window.location.hash = '#/home'; handleRoute(); }
     init();
