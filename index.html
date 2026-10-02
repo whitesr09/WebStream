@@ -8,7 +8,6 @@
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="description" content="StreamVault - Ultimate Streaming Web Application">
   <title>StreamVault</title>
   <link rel="manifest" href="manifest.json">
   <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect fill='%230a0a0f' width='100' height='100' rx='20'/><text x='50' y='68' text-anchor='middle' fill='%23e50914' font-size='50' font-weight='800' font-family='Arial'>SV</text></svg>">
@@ -178,61 +177,21 @@
     .episode-meta { font-size: 0.75rem; color: var(--text-muted); margin-bottom: 4px; }
     .episode-overview { font-size: 0.75rem; color: var(--text-secondary); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 
-    /* PLAYER - Fixed: Not fullscreen initially */
-    .player-page { background: var(--bg-primary); min-height: 100vh; padding-bottom: 40px; }
-    .player-video-container { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; margin-bottom: 16px; }
-    .player-video-container iframe { width: 100%; height: 100%; border: none; }
-    .player-video-container.fullscreen { position: fixed; inset: 0; z-index: 300; aspect-ratio: unset; }
-    .player-overlay { position: absolute; inset: 0; z-index: 10; background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 25%, transparent 75%, rgba(0,0,0,0.8) 100%); opacity: 0; transition: opacity 0.3s; display: flex; flex-direction: column; justify-content: space-between; pointer-events: none; }
-    .player-overlay.visible { opacity: 1; }
-    .player-overlay > * { pointer-events: auto; }
-    .player-top-bar { display: flex; align-items: center; padding: 16px; padding-top: calc(16px + var(--safe-top)); gap: 12px; }
-    .player-back-btn { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-    .player-title-display { flex: 1; font-size: 0.9rem; font-weight: 600; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-    .player-top-actions { display: flex; gap: 8px; }
-    .player-top-actions button { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
-    .player-center-controls { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); display: flex; align-items: center; gap: 24px; }
-    .player-ctrl-btn { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.2rem; }
-    .player-ctrl-btn.main { width: 72px; height: 72px; font-size: 1.5rem; }
-    .player-ctrl-btn:active { transform: scale(0.9); }
-    .player-bottom-bar { padding: 16px; padding-bottom: calc(16px + var(--safe-bottom)); }
-    .player-bottom-actions { display: flex; justify-content: space-around; align-items: center; }
-    .player-bottom-actions button { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.1rem; }
-
-    .gesture-indicator { position: absolute; top: 50%; transform: translateY(-50%); width: 60px; height: 60px; border-radius: 50%; background: rgba(0,0,0,0.6); backdrop-filter: blur(10px); display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 20; }
-    .gesture-indicator.visible { opacity: 1; }
-    .gesture-indicator.left { left: 20px; }
-    .gesture-indicator.right { right: 20px; }
-    .gesture-indicator i { font-size: 1.2rem; margin-bottom: 4px; }
-    .gesture-indicator span { font-size: 0.7rem; font-weight: 600; }
-
-    .player-panel { position: absolute; bottom: 0; left: 0; right: 0; max-height: 70vh; overflow-y: auto; padding: 20px; padding-bottom: calc(20px + var(--safe-bottom)); transform: translateY(100%); transition: transform 0.3s ease; z-index: 25; background: var(--bg-secondary); border-radius: var(--radius-xl) var(--radius-xl) 0 0; }
-    .player-panel.open { transform: translateY(0); }
-    .player-panel-handle { width: 40px; height: 4px; background: rgba(255,255,255,0.3); border-radius: 2px; margin: 0 auto 16px; }
-    .player-panel h3 { font-size: 1rem; margin-bottom: 12px; }
-    .panel-option { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-glass); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); margin-bottom: 8px; cursor: pointer; }
-    .panel-option:hover { background: rgba(255,255,255,0.1); }
-    .panel-option.active { border-color: var(--accent); background: rgba(229,9,20,0.1); }
-    .panel-option-icon { width: 32px; height: 32px; border-radius: 50%; background: var(--bg-glass); display: flex; align-items: center; justify-content: center; font-size: 0.9rem; }
-    .panel-option-info { flex: 1; }
-    .panel-option-name { font-size: 0.85rem; font-weight: 500; }
-    .panel-option-desc { font-size: 0.7rem; color: var(--text-muted); }
-
-    .subtitle-settings label { display: block; font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 6px; margin-top: 12px; }
-    .subtitle-settings input[type="range"] { width: 100%; accent-color: var(--accent); }
-    .subtitle-settings input[type="color"] { width: 100%; height: 40px; border: none; border-radius: var(--radius-sm); background: var(--bg-glass); }
-    .subtitle-settings select { width: 100%; padding: 10px; background: var(--bg-glass); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); color: var(--text-primary); }
-
-    .player-source-tabs { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; background: var(--bg-primary); }
-    .source-tab { flex-shrink: 0; padding: 8px 16px; border-radius: var(--radius-sm); background: var(--bg-glass); border: 1px solid var(--border-subtle); font-size: 0.8rem; font-weight: 500; }
+    /* OLD WORKING PLAYER MODEL */
+    .player-page { background: #000; min-height: 100vh; padding-bottom: 40px; }
+    .player-video-wrap { position: relative; width: 100%; aspect-ratio: 16/9; background: #000; }
+    .player-video-wrap iframe { width: 100%; height: 100%; border: none; }
+    .player-source-tabs { display: flex; gap: 8px; padding: 12px 16px; overflow-x: auto; background: var(--bg-primary); border-bottom: 1px solid var(--border-subtle); }
+    .source-tab { flex-shrink: 0; padding: 8px 16px; border-radius: var(--radius-sm); background: var(--bg-glass); border: 1px solid var(--border-subtle); font-size: 0.8rem; font-weight: 500; color: var(--text-secondary); transition: all 0.2s; }
     .source-tab.active { background: var(--accent); color: white; border-color: var(--accent); }
     .player-info { padding: 16px; background: var(--bg-primary); }
     .player-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
     .player-subtitle { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
     .episode-chips { display: flex; gap: 8px; overflow-x: auto; padding: 0 16px 16px; background: var(--bg-primary); }
-    .episode-chip { flex-shrink: 0; padding: 8px 14px; border-radius: var(--radius-sm); background: var(--bg-glass); border: 1px solid var(--border-subtle); font-size: 0.75rem; }
+    .episode-chip { flex-shrink: 0; padding: 8px 14px; border-radius: var(--radius-sm); background: var(--bg-glass); border: 1px solid var(--border-subtle); font-size: 0.75rem; color: var(--text-secondary); }
     .episode-chip.active { background: var(--accent); color: white; border-color: var(--accent); }
-    .btn-mark-watched { display: flex; align-items: center; gap: 8px; padding: 12px 20px; margin: 0 16px 16px; background: var(--bg-glass); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 500; width: calc(100% - 32px); justify-content: center; }
+    .btn-mark-watched { display: flex; align-items: center; gap: 8px; padding: 12px 20px; margin: 0 16px 16px; background: var(--bg-glass); border: 1px solid var(--border-subtle); border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 500; width: calc(100% - 32px); justify-content: center; color: var(--text-secondary); }
+    .btn-open-tab { display: flex; align-items: center; gap: 8px; padding: 12px 20px; margin: 0 16px 16px; background: var(--accent); border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600; width: calc(100% - 32px); justify-content: center; color: white; }
 
     .search-page { padding-top: var(--header-height); }
     .search-input-wrap { position: sticky; top: var(--header-height); z-index: 50; padding: 12px 16px; background: var(--bg-primary); }
@@ -347,15 +306,6 @@
     .plugin-delete { width: 32px; height: 32px; display: flex; align-items: center; justify-content: center; border-radius: 50%; color: var(--text-muted); }
     .plugin-delete:hover { color: #f44336; }
 
-    .plugin-install-card { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); margin-bottom: 10px; }
-    .plugin-install-icon { width: 44px; height: 44px; border-radius: var(--radius-sm); background: var(--accent); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: white; flex-shrink: 0; }
-    .plugin-install-info { flex: 1; }
-    .plugin-install-name { font-size: 0.9rem; font-weight: 600; }
-    .plugin-install-desc { font-size: 0.75rem; color: var(--text-muted); }
-    .plugin-install-btn { padding: 8px 16px; border-radius: var(--radius-sm); font-size: 0.8rem; font-weight: 600; flex-shrink: 0; }
-    .plugin-install-btn.install { background: var(--accent); color: white; }
-    .plugin-install-btn.installed { background: var(--bg-glass); color: var(--text-muted); border: 1px solid var(--border-subtle); }
-
     .repo-card { display: flex; align-items: center; gap: 12px; padding: 14px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); margin-bottom: 10px; cursor: pointer; }
     .repo-card:hover { border-color: var(--accent); }
     .repo-icon { width: 44px; height: 44px; border-radius: var(--radius-sm); background: linear-gradient(135deg, var(--accent), #ff6b35); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; color: white; flex-shrink: 0; }
@@ -394,7 +344,7 @@
     .ext-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
     .ext-list { padding: 8px 16px; }
     .ext-item { display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); margin-bottom: 8px; }
-    .ext-item-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); background: var(--bg-glass); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; flex-shrink: 0; overflow: hidden; }
+    .ext-item-icon { width: 48px; height: 48px; border-radius: var(--radius-sm); background: var(--bg-glass); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; font-weight: 700; flex-shrink: 0; overflow: hidden; color: var(--accent); }
     .ext-item-icon img { width: 100%; height: 100%; object-fit: cover; }
     .ext-item-info { flex: 1; min-width: 0; }
     .ext-item-name { font-size: 0.95rem; font-weight: 600; margin-bottom: 2px; }
@@ -600,7 +550,7 @@
         case 'history': renderHistory(); break;
         case 'settings': renderSettings(); break;
         case 'mystuff': renderMyStuff(); break;
-        case 'plugins': if (route.id !== undefined) renderExtensionBrowser(route.id); else renderPlugins(); break;
+        case 'plugins': if (route.id !== undefined && route.id !== '') renderExtensionBrowser(route.id); else renderPlugins(); break;
         case 'apikeys': renderApiKeys(); break;
         case 'sources': renderSources(); break;
         default: renderHome();
@@ -886,9 +836,7 @@
 
     function playTrailer(youtubeKey) { openModal('<div style="aspect-ratio:16/9;margin:-24px -24px 16px;border-radius:var(--radius-xl) var(--radius-xl) 0 0;overflow:hidden"><iframe width="100%" height="100%" src="https://www.youtube.com/embed/' + youtubeKey + '?autoplay=1" frameborder="0" allow="autoplay;encrypted-media" allowfullscreen></iframe></div>'); }
 
-    // ===== PLAYER - FIXED: Not fullscreen initially, source selector inside =====
-    var playerState = { visible: true, hideTimer: null, brightness: 100, volume: 100, isPlaying: true, touchStartX: 0, touchStartY: 0, touchSide: null, touchStartValue: 0, isFullscreen: false, currentSource: 0, sources: [] };
-
+    // ===== OLD WORKING PLAYER MODEL - REVERTED =====
     async function renderPlayer(type, id, extra, extra2) {
       var main = document.getElementById('main-content');
       var parts = id ? id.split('/') : [];
@@ -920,145 +868,58 @@
         }
       }
 
-      // Build sources - FIXED: More reliable sources
+      // Build sources
       var sources = [];
       var activeSources = state.sources.filter(function(s) { return s.active; });
       for (var si = 0; si < activeSources.length; si++) {
         var src = activeSources[si];
         var url = type === 'movie' ? src.movieUrl : src.tvUrl;
         url = url.replace('{id}', tmdbId).replace('{season}', season).replace('{episode}', episode);
-        sources.push({ name: src.name, url: url, id: src.id, icon: src.icon || src.name.charAt(0) });
+        sources.push({ name: src.name, url: url, id: src.id });
       }
-      if (trailer) sources.push({ name: 'Trailer', url: 'https://www.youtube.com/embed/' + trailer.key + '?autoplay=1', id: 'trailer', icon: 'YT' });
+      if (trailer) sources.push({ name: 'Trailer', url: 'https://www.youtube.com/embed/' + trailer.key + '?autoplay=1', id: 'trailer' });
 
       var sourceTabsHTML = '';
-      for (var sti = 0; sti < sources.length; sti++) sourceTabsHTML += '<button class="source-tab ' + (sti === 0 ? 'active' : '') + '" onclick="switchPlayerSource(' + sti + ', \'' + sources[sti].url.replace(/'/g, "\\'") + '\')">' + sources[sti].name + '</button>';
+      for (var sti = 0; sti < sources.length; sti++) {
+        sourceTabsHTML += '<button class="source-tab ' + (sti === 0 ? 'active' : '') + '" onclick="switchPlayerSource(' + sti + ', \'' + sources[sti].url.replace(/'/g, "\\'") + '\')">' + sources[sti].name + '</button>';
+      }
 
       var overviewHTML = (detail && detail.overview) ? '<div style="padding:0 16px 16px"><div class="detail-section"><p class="detail-overview" style="font-size:0.85rem">' + detail.overview + '</p></div></div>' : '';
+      var firstSourceUrl = sources.length > 0 ? sources[0].url : '';
 
-      // FIXED: Player not fullscreen initially
       main.innerHTML = '<div class="player-page page-enter">' +
-        '<div class="player-video-container" id="player-video-container">' +
-          '<iframe id="player-iframe" src="' + (sources[0] ? sources[0].url : '') + '" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write; web-share" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
-          '<div class="player-overlay visible" id="player-overlay">' +
-            '<div class="player-top-bar liquid-glass" style="border-radius:var(--radius-lg);margin:0 12px">' +
-              '<button class="player-back-btn liquid-glass" onclick="exitPlayer()"><i class="fas fa-arrow-left"></i></button>' +
-              '<div class="player-title-display">' + title + ' - ' + subtitle + '</div>' +
-              '<div class="player-top-actions">' +
-                '<button class="liquid-glass" onclick="shareCurrent()"><i class="fas fa-share-alt"></i></button>' +
-                '<button class="liquid-glass" onclick="togglePlayerFullscreen()"><i class="fas fa-expand"></i></button>' +
-              '</div>' +
-            '</div>' +
-            '<div class="player-center-controls">' +
-              '<button class="player-ctrl-btn liquid-glass" onclick="playerSkip(-10)"><i class="fas fa-undo"></i></button>' +
-              '<button class="player-ctrl-btn main liquid-glass" id="player-play-btn" onclick="playerTogglePlay()"><i class="fas fa-play"></i></button>' +
-              '<button class="player-ctrl-btn liquid-glass" onclick="playerSkip(10)"><i class="fas fa-redo"></i></button>' +
-            '</div>' +
-            '<div class="gesture-indicator left" id="gesture-left"><i class="fas fa-sun"></i><span id="gesture-left-val">100%</span></div>' +
-            '<div class="gesture-indicator right" id="gesture-right"><i class="fas fa-volume-up"></i><span id="gesture-right-val">100%</span></div>' +
-            '<div class="player-bottom-bar liquid-glass" style="border-radius:var(--radius-lg);margin:0 12px">' +
-              '<div class="player-bottom-actions">' +
-                '<button onclick="togglePlayerPanel(\'episodes\')"><i class="fas fa-list"></i></button>' +
-                '<button onclick="playerSkip(-10)"><i class="fas fa-undo"></i></button>' +
-                '<button onclick="playerTogglePlay()" id="player-play-btn2"><i class="fas fa-play"></i></button>' +
-                '<button onclick="playerSkip(10)"><i class="fas fa-redo"></i></button>' +
-                '<button onclick="togglePlayerPanel(\'settings\')"><i class="fas fa-cog"></i></button>' +
-                '<button onclick="togglePlayerPanel(\'subtitles\')"><i class="fas fa-closed-captioning"></i></button>' +
-                '<button onclick="togglePlayerPanel(\'audio\')"><i class="fas fa-music"></i></button>' +
-                '<button onclick="togglePlayerFullscreen()"><i class="fas fa-expand"></i></button>' +
-              '</div>' +
-            '</div>' +
-          '</div>' +
-          '<div class="player-panel" id="panel-episodes"><div class="player-panel-handle"></div><h3>Episodes</h3><div id="panel-episodes-list"></div></div>' +
-          '<div class="player-panel" id="panel-settings"><div class="player-panel-handle"></div><h3>Player Settings</h3><div class="subtitle-settings"><label>Video Quality</label><select onchange="changeQuality(this.value)"><option value="auto" selected>Auto</option><option value="1080">1080p</option><option value="720">720p</option><option value="480">480p</option></select><label>Playback Speed</label><select onchange="changeSpeed(this.value)"><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option value="1" selected>1x (Normal)</option><option value="1.25">1.25x</option><option value="1.5">1.5x</option><option value="2">2x</option></select><label>Aspect Ratio</label><select onchange="changeAspect(this.value)"><option value="contain" selected>Fit (Contain)</option><option value="cover">Fill (Cover)</option><option value="fill">Stretch</option></select></div></div>' +
-          '<div class="player-panel" id="panel-subtitles"><div class="player-panel-handle"></div><h3>Subtitle Settings</h3><div class="subtitle-settings"><label>Font Size: <span id="sub-size-val">100%</span></label><input type="range" min="50" max="200" value="100" oninput="document.getElementById(\'sub-size-val\').textContent=this.value+\'%\'"><label>Text Color</label><input type="color" value="#ffffff"><label>Background Color</label><input type="color" value="#000000"><label>Background Opacity: <span id="sub-bg-val">50%</span></label><input type="range" min="0" max="100" value="50" oninput="document.getElementById(\'sub-bg-val\').textContent=this.value+\'%\'"><label>Position</label><select><option value="bottom" selected>Bottom</option><option value="top">Top</option><option value="middle">Middle</option></select></div></div>' +
-          '<div class="player-panel" id="panel-audio"><div class="player-panel-handle"></div><h3>Audio Tracks</h3><div class="panel-option active"><div class="panel-option-icon"><i class="fas fa-volume-up"></i></div><div class="panel-option-info"><div class="panel-option-name">Default Audio</div><div class="panel-option-desc">Original language</div></div></div><div class="panel-option"><div class="panel-option-icon"><i class="fas fa-language"></i></div><div class="panel-option-info"><div class="panel-option-name">English Dub</div><div class="panel-option-desc">If available</div></div></div><div class="panel-option"><div class="panel-option-icon"><i class="fas fa-language"></i></div><div class="panel-option-info"><div class="panel-option-name">Hindi Dub</div><div class="panel-option-desc">If available</div></div></div></div>' +
-          '<div class="player-panel" id="panel-more"><div class="player-panel-handle"></div><h3>More Options</h3><div class="panel-option" onclick="openInNewTab()"><div class="panel-option-icon"><i class="fas fa-external-link-alt"></i></div><div class="panel-option-info"><div class="panel-option-name">Open in New Tab</div><div class="panel-option-desc">If embed fails</div></div></div><div class="panel-option" onclick="togglePlayerFullscreen()"><div class="panel-option-icon"><i class="fas fa-expand"></i></div><div class="panel-option-info"><div class="panel-option-name">Fullscreen</div></div></div><div class="panel-option" onclick="reportIssue()"><div class="panel-option-icon"><i class="fas fa-flag"></i></div><div class="panel-option-info"><div class="panel-option-name">Report Issue</div></div></div></div>' +
+        '<div class="player-video-wrap">' +
+          '<iframe id="player-iframe" src="' + firstSourceUrl + '" allowfullscreen allow="autoplay; encrypted-media; fullscreen; picture-in-picture; clipboard-write; web-share" referrerpolicy="no-referrer-when-downgrade"></iframe>' +
         '</div>' +
-        '<div style="padding:0 16px"><h3 style="font-size:1rem;margin-bottom:12px">Select Source</h3></div>' +
         '<div class="player-source-tabs" id="source-tabs">' + sourceTabsHTML + '</div>' +
         '<div class="player-info"><h2 class="player-title">' + title + '</h2><p class="player-subtitle">' + subtitle + '</p></div>' +
         episodeChipsHTML +
+        '<button class="btn-open-tab" onclick="openCurrentInNewTab()"><i class="fas fa-external-link-alt"></i> Open in New Tab (if not playing)</button>' +
         '<button class="btn-mark-watched" onclick="markWatched(this)"><i class="fas fa-check"></i> Mark as Watched</button>' +
         overviewHTML +
       '</div>';
 
-      playerState.sources = sources;
-      playerState.currentSource = 0;
-      playerState.visible = true;
-      playerState.isFullscreen = false;
-      setupPlayerGestures();
-      startAutoHide();
-
-      if (type === 'tv' && detail) {
-        var seasonData = await api('/tv/' + tmdbId + '/season/' + season);
-        if (seasonData && seasonData.episodes) {
-          var epList = document.getElementById('panel-episodes-list');
-          if (epList) {
-            var epHTML = '';
-            for (var ei = 0; ei < seasonData.episodes.length; ei++) {
-              var ep = seasonData.episodes[ei];
-              var activeClass = ep.episode_number == episode ? 'active' : '';
-              epHTML += '<div class="panel-option ' + activeClass + '" onclick="navigate(\'#/player/tv/' + tmdbId + '/' + season + '/' + ep.episode_number + '\')"><div class="panel-option-icon">E' + ep.episode_number + '</div><div class="panel-option-info"><div class="panel-option-name">' + (ep.name || 'Episode ' + ep.episode_number) + '</div><div class="panel-option-desc">' + (ep.air_date || '') + '</div></div></div>';
-            }
-            epList.innerHTML = epHTML;
-          }
-        }
-      }
+      window._playerSources = sources;
     }
 
-    function setupPlayerGestures() {
-      var container = document.getElementById('player-video-container');
-      if (!container) return;
-      container.addEventListener('touchstart', function(e) { playerState.touchStartX = e.touches[0].clientX; playerState.touchStartY = e.touches[0].clientY; playerState.touchSide = e.touches[0].clientX < window.innerWidth / 2 ? 'left' : 'right'; playerState.touchStartValue = playerState.touchSide === 'left' ? playerState.brightness : playerState.volume; }, { passive: true });
-      container.addEventListener('touchmove', function(e) {
-        var dx = e.touches[0].clientX - playerState.touchStartX;
-        var dy = playerState.touchStartY - e.touches[0].clientY;
-        if (Math.abs(dy) > Math.abs(dx) && Math.abs(dy) > 10) {
-          var change = (dy / 200) * 100;
-          var newVal = Math.max(0, Math.min(100, playerState.touchStartValue + change));
-          if (playerState.touchSide === 'left') { playerState.brightness = newVal; document.getElementById('gesture-left-val').textContent = Math.round(newVal) + '%'; document.getElementById('gesture-left').classList.add('visible'); }
-          else { playerState.volume = newVal; document.getElementById('gesture-right-val').textContent = Math.round(newVal) + '%'; document.getElementById('gesture-right').classList.add('visible'); }
-        }
-      }, { passive: true });
-      container.addEventListener('touchend', function() { document.getElementById('gesture-left').classList.remove('visible'); document.getElementById('gesture-right').classList.remove('visible'); });
-      container.addEventListener('click', function(e) { if (e.target.tagName !== 'BUTTON' && !e.target.closest('button') && !e.target.closest('.player-panel')) togglePlayerOverlay(); });
-    }
-
-    function togglePlayerOverlay() { playerState.visible = !playerState.visible; var overlay = document.getElementById('player-overlay'); if (overlay) overlay.classList.toggle('visible', playerState.visible); if (playerState.visible) startAutoHide(); }
-    function startAutoHide() { if (playerState.hideTimer) clearTimeout(playerState.hideTimer); playerState.hideTimer = setTimeout(function() { playerState.visible = false; var overlay = document.getElementById('player-overlay'); if (overlay) overlay.classList.remove('visible'); }, 5000); }
-    function playerTogglePlay() { playerState.isPlaying = !playerState.isPlaying; var icons = document.querySelectorAll('#player-play-btn i, #player-play-btn2 i'); for (var i = 0; i < icons.length; i++) icons[i].className = playerState.isPlaying ? 'fas fa-pause' : 'fas fa-play'; }
-    function playerSkip(seconds) { showToast((seconds > 0 ? '+' : '') + seconds + ' seconds', 'info'); }
     function switchPlayerSource(idx, url) {
-      playerState.currentSource = idx;
       var tabs = document.querySelectorAll('.source-tab');
       for (var i = 0; i < tabs.length; i++) tabs[i].classList.toggle('active', i === idx);
       var iframe = document.getElementById('player-iframe');
       if (iframe) {
         iframe.src = url;
-        showToast('Switched to ' + playerState.sources[idx].name, 'info');
+        showToast('Switched to ' + (window._playerSources[idx] ? window._playerSources[idx].name : 'source'), 'info');
       }
     }
-    function togglePlayerPanel(name) { var panels = document.querySelectorAll('.player-panel'); for (var i = 0; i < panels.length; i++) { if (panels[i].id === 'panel-' + name) panels[i].classList.toggle('open'); else panels[i].classList.remove('open'); } }
-    function changeQuality(val) { showToast('Quality: ' + val, 'info'); }
-    function changeSpeed(val) { showToast('Speed: ' + val + 'x', 'info'); }
-    function changeAspect(val) { var iframe = document.getElementById('player-iframe'); if (iframe) iframe.style.objectFit = val; }
-    function togglePlayerFullscreen() {
-      var container = document.getElementById('player-video-container');
-      if (!container) return;
-      playerState.isFullscreen = !playerState.isFullscreen;
-      if (playerState.isFullscreen) {
-        container.classList.add('fullscreen');
-        if (document.documentElement.requestFullscreen) document.documentElement.requestFullscreen().catch(function(){});
-      } else {
-        container.classList.remove('fullscreen');
-        if (document.exitFullscreen) document.exitFullscreen();
+
+    function openCurrentInNewTab() {
+      var iframe = document.getElementById('player-iframe');
+      if (iframe && iframe.src) {
+        window.open(iframe.src, '_blank');
+        showToast('Opened in new tab', 'info');
       }
     }
-    function shareCurrent() { if (navigator.share) navigator.share({ title: 'StreamVault', url: window.location.href }); else { navigator.clipboard.writeText(window.location.href); showToast('Link copied!', 'success'); } }
-    function openInNewTab() { var iframe = document.getElementById('player-iframe'); if (iframe && iframe.src) window.open(iframe.src, '_blank'); }
-    function reportIssue() { showToast('Issue reported. Thank you!', 'success'); }
-    function exitPlayer() { history.back(); }
+
     function markWatched(btn) { btn.innerHTML = '<i class="fas fa-check-circle"></i> Watched!'; btn.style.borderColor = 'var(--accent)'; btn.style.color = 'var(--accent)'; showToast('Marked as watched!', 'success'); }
 
     var searchTimeout = null;
@@ -1219,7 +1080,6 @@
         var rawUrl = url;
         if (url.includes('github.com') && !url.includes('raw.githubusercontent.com')) rawUrl = url.replace('github.com', 'raw.githubusercontent.com').replace('/blob/', '/');
         
-        // FIXED: If URL ends with .json, fetch it directly
         var pluginsUrl = rawUrl;
         if (!rawUrl.endsWith('.json')) {
           pluginsUrl = rawUrl.replace(/\/$/, '') + '/plugins.json';
@@ -1229,18 +1089,13 @@
         var res = await fetch(pluginsUrl);
         if (res.ok) {
           var data = await res.json();
-          // Handle different JSON formats
           if (Array.isArray(data)) plugins = data;
           else if (data.plugins && Array.isArray(data.plugins)) plugins = data.plugins;
           else if (data.sources && Array.isArray(data.sources)) plugins = data.sources;
           else if (data.extensions && Array.isArray(data.extensions)) plugins = data.extensions;
-          else {
-            // If it's a single plugin object
-            plugins = [data];
-          }
+          else if (typeof data === 'object' && data.name) plugins = [data];
         }
         
-        // Try other common filenames if no plugins found
         if (plugins.length === 0 && !rawUrl.endsWith('.json')) {
           var commonFiles = ['extensions.json', 'providers.json', 'sources.json', 'index.json', 'repo.json'];
           for (var cf = 0; cf < commonFiles.length; cf++) {
@@ -1259,7 +1114,6 @@
           }
         }
         
-        // If still no plugins, create a default
         if (plugins.length === 0) {
           plugins = [{ name: name || url.split('/').pop(), description: 'Plugin from ' + url, sources: [{ id: (name || url.split('/').pop()).toLowerCase().replace(/\s/g, ''), name: name || url.split('/').pop(), movieUrl: 'https://vidsrc.xyz/embed/movie/{id}', tvUrl: 'https://vidsrc.xyz/embed/tv/{id}/{season}/{episode}' }] }];
         }
@@ -1296,14 +1150,14 @@
       }
     }
 
-    var extBrowserTab = 'movie';
+    var extBrowserTab = 'all';
     async function renderExtensionBrowser(repoIndex) {
       var repo = state.pluginRepos[parseInt(repoIndex)];
       if (!repo) { navigate('#/plugins'); return; }
       var main = document.getElementById('main-content');
 
-      var categories = ['movie', 'tv', 'anime', 'asian'];
-      var categoryLabels = { movie: 'Movies', tv: 'TV Series', anime: 'Anime', asian: 'Asian Dramas' };
+      var categories = ['all', 'movie', 'tv', 'anime', 'asian', 'adult'];
+      var categoryLabels = { all: 'All', movie: 'Movies', tv: 'TV Series', anime: 'Anime', asian: 'Asian Dramas', adult: 'Adult 18+' };
 
       var tabsHTML = '';
       for (var c = 0; c < categories.length; c++) {
@@ -1311,14 +1165,20 @@
       }
 
       var plugins = repo.plugins || [];
-      var filtered = plugins.filter(function(p) { return p.category === extBrowserTab || (extBrowserTab === 'movie' && !p.category) || (extBrowserTab === 'tv' && p.category === 'tv'); });
+      var filtered = plugins;
+      if (extBrowserTab !== 'all') {
+        filtered = plugins.filter(function(p) { 
+          if (extBrowserTab === 'adult') return p.adult === true;
+          return p.category === extBrowserTab; 
+        });
+      }
 
       var listHTML = '';
       for (var i = 0; i < filtered.length; i++) {
         var p = filtered[i];
         var isInstalled = state.installedPlugins.some(function(ip) { return ip.name === p.name; });
         var langFlag = p.language === 'Hindi' ? '🇮🇳' : '🇬🇧';
-        var iconContent = p.icon && p.icon.startsWith('http') ? '<img src="' + p.icon + '" alt="">' : p.icon || p.name.charAt(0).toUpperCase();
+        var iconContent = p.icon && p.icon.startsWith && p.icon.startsWith('http') ? '<img src="' + p.icon + '" alt="">' : (p.icon || p.name.charAt(0).toUpperCase());
         listHTML += '<div class="ext-item"><div class="ext-item-icon">' + iconContent + '</div><div class="ext-item-info"><div class="ext-item-name">' + p.name + '</div><div class="ext-item-meta"><span class="lang-flag">' + langFlag + '</span><span>' + (p.language || 'English') + '</span><span>v' + (p.version || '1') + '</span><span>' + (p.size || '10 kB') + '</span>' + (p.adult ? '<span class="adult-tag">18+</span>' : '') + '</div><div class="ext-item-desc">' + (p.description || '') + '</div></div><button class="ext-item-action ' + (isInstalled ? 'installed' : 'download') + '" onclick="' + (isInstalled ? 'uninstallPluginByName(\'' + p.name.replace(/'/g, "\\'") + '\')' : 'installPluginFromRepo(' + repoIndex + ', ' + i + ')') + '"><i class="fas fa-' + (isInstalled ? 'trash' : 'download') + '"></i></button></div>';
       }
 
@@ -1364,7 +1224,7 @@
       storage.set('installedPlugins', state.installedPlugins);
       showToast('Uninstalled: ' + name, 'info');
       var route = parseRoute();
-      if (route.id !== undefined) renderExtensionBrowser(route.id);
+      if (route.id !== undefined && route.id !== '') renderExtensionBrowser(route.id);
       else renderPlugins();
     }
 
@@ -1387,27 +1247,21 @@
 
       main.innerHTML = '<div class="settings-page page-enter"><div class="page-header"><h1 class="page-title">API Keys</h1></div><div style="padding:0 16px">' +
         '<div style="background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md);padding:14px;margin-bottom:16px"><p style="font-size:0.8rem;color:var(--text-secondary);line-height:1.5"><i class="fas fa-info-circle" style="color:var(--accent);margin-right:6px"></i>Add your own API keys. Use the Test button to verify connectivity.</p></div>' +
-
         '<div class="api-key-item"><div class="api-key-icon" style="background:#01b4e4;color:white"><i class="fas fa-film"></i></div><div class="api-key-info"><div class="api-key-name">TMDB API Key (v3)</div><div class="api-key-status">' + tmdbStatus + '</div></div></div>' +
         '<input class="api-key-input" id="api-tmdb" type="text" placeholder="TMDB API Key" value="' + (state.apiKeys.tmdb || '') + '">' +
         '<input class="api-key-input" id="api-tmdb-bearer" type="text" placeholder="TMDB Bearer Token (v4)" value="' + (state.apiKeys.tmdbBearer || '') + '" style="margin-bottom:8px">' +
         '<button class="api-test-btn" id="tmdb-test-btn" onclick="testApi(\'tmdb\')"><i class="fas fa-plug"></i> Test Connection</button>' +
-
         '<div class="api-key-item" style="margin-top:16px"><div class="api-key-icon" style="background:#f5c518;color:#000"><i class="fas fa-database"></i></div><div class="api-key-info"><div class="api-key-name">OMDB API Key</div><div class="api-key-status">' + omdbStatus + '</div></div></div>' +
         '<input class="api-key-input" id="api-omdb" type="text" placeholder="OMDB API Key (get from omdbapi.com)" value="' + (state.apiKeys.omdb || '') + '">' +
         '<button class="api-test-btn" id="omdb-test-btn" onclick="testApi(\'omdb\')"><i class="fas fa-plug"></i> Test Connection</button>' +
-
         '<div class="api-key-item" style="margin-top:16px"><div class="api-key-icon" style="background:#f5c518;color:#000"><i class="fas fa-star"></i></div><div class="api-key-info"><div class="api-key-name">IMDB API Key</div><div class="api-key-status">Optional</div></div></div>' +
         '<input class="api-key-input" id="api-imdb" type="text" placeholder="IMDB API Key (via RapidAPI)" value="' + (state.apiKeys.imdb || '') + '">' +
         '<button class="api-test-btn" id="imdb-test-btn" onclick="testApi(\'imdb\')"><i class="fas fa-plug"></i> Test Connection</button>' +
-
         '<div class="api-key-item" style="margin-top:16px"><div class="api-key-icon" style="background:#9c27b0;color:white"><i class="fas fa-database"></i></div><div class="api-key-info"><div class="api-key-name">Additional Sources</div><div class="api-key-status">Optional</div></div></div>' +
         '<input class="api-key-input" id="api-tvdb" type="text" placeholder="TVDB API Key (optional)" value="' + (state.apiKeys.tvdb || '') + '">' +
         '<input class="api-key-input" id="api-anilist" type="text" placeholder="AniList API Token (optional)" value="' + (state.apiKeys.anilist || '') + '" style="margin-bottom:8px">' +
-
         '<button class="settings-btn" onclick="saveApiKeys()" style="background:var(--accent);color:white;margin-top:16px"><i class="fas fa-save"></i> Save All API Keys</button>' +
         '<button class="settings-btn" onclick="resetApiKeys()"><i class="fas fa-undo"></i> Reset to Default</button>' +
-
         '<div style="margin-top:20px;padding:14px;background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-md)"><h4 style="font-size:0.85rem;margin-bottom:8px">How to get API keys:</h4><p style="font-size:0.75rem;color:var(--text-secondary);line-height:1.6"><strong>TMDB:</strong> Free at themoviedb.org/settings/api<br><strong>OMDB:</strong> Free at omdbapi.com/apikey.aspx<br><strong>IMDB:</strong> Via RapidAPI (imdb-api)<br><strong>TVDB:</strong> Free at thetvdb.com/api-information<br><strong>AniList:</strong> Free at anilist.co/settings/developer</p></div>' +
       '</div></div>';
     }
@@ -1417,10 +1271,8 @@
       if (!btn) return;
       btn.className = 'api-test-btn testing';
       btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Testing...';
-
       try {
         if (type === 'tmdb') {
-          var key = document.getElementById('api-tmdb').value.trim() || CONFIG.DEFAULT_TMDB_KEY;
           var bearer = document.getElementById('api-tmdb-bearer').value.trim() || CONFIG.DEFAULT_TMDB_BEARER;
           var res = await fetch('https://api.themoviedb.org/3/configuration', { headers: { 'Authorization': 'Bearer ' + bearer } });
           if (res.ok) { btn.className = 'api-test-btn success'; btn.innerHTML = '<i class="fas fa-check"></i> Connected!'; state.apiKeys.tmdbTested = true; }
@@ -1435,14 +1287,9 @@
         } else if (type === 'imdb') {
           var key = document.getElementById('api-imdb').value.trim();
           if (!key) { btn.className = 'api-test-btn error'; btn.innerHTML = '<i class="fas fa-times"></i> No key'; return; }
-          btn.className = 'api-test-btn success';
-          btn.innerHTML = '<i class="fas fa-check"></i> Key saved';
-          state.apiKeys.imdbTested = true;
+          btn.className = 'api-test-btn success'; btn.innerHTML = '<i class="fas fa-check"></i> Key saved'; state.apiKeys.imdbTested = true;
         }
-      } catch (e) {
-        btn.className = 'api-test-btn error';
-        btn.innerHTML = '<i class="fas fa-times"></i> Network error';
-      }
+      } catch (e) { btn.className = 'api-test-btn error'; btn.innerHTML = '<i class="fas fa-times"></i> Network error'; }
     }
 
     function saveApiKeys() {
@@ -1474,7 +1321,7 @@
       var accents = ['#e50914', '#2196f3', '#9c27b0', '#4caf50', '#f5c518'];
       var themeHTML = ''; for (var i = 0; i < themes.length; i++) { var t = themes[i]; themeHTML += '<button class="chip ' + (state.theme === t ? 'active' : '') + '" onclick="setTheme(\'' + t + '\')" style="font-size:0.75rem;padding:6px 12px">' + t.charAt(0).toUpperCase() + t.slice(1) + '</button>'; }
       var accentHTML = ''; for (var j = 0; j < accents.length; j++) { var c = accents[j]; accentHTML += '<div class="accent-dot ' + (state.accent === c ? 'active' : '') + '" style="background:' + c + '" onclick="setAccent(\'' + c + '\')"></div>'; }
-      main.innerHTML = '<div class="settings-page page-enter"><div class="page-header"><h1 class="page-title">Settings</h1></div><div class="settings-group"><div class="settings-group-title">Appearance</div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-palette"></i><span class="settings-item-label">Theme</span></div><div style="display:flex;gap:8px">' + themeHTML + '</div></div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-circle"></i><span class="settings-item-label">Accent Color</span></div><div class="accent-colors">' + accentHTML + '</div></div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-gem"></i><span class="settings-item-label">Liquid Glass Effect</span></div><div class="toggle-switch ' + (state.liquidGlass ? 'active' : '') + '" onclick="toggleLiquidGlass()"></div></div></div><div class="settings-group"><div class="settings-group-title">Content</div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-fire" style="color:#ff4444"></i><span class="settings-item-label">18+ Adult Content</span></div><div class="toggle-switch ' + (state.showAdult ? 'active' : '') + '" onclick="toggleAdult()"></div></div></div><div class="settings-group"><div class="settings-group-title">Quick Access</div><button class="settings-btn" onclick="navigate(\'#/plugins\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-puzzle-piece" style="color:var(--accent);width:20px"></i> Plugins (' + state.installedPlugins.length + ')</button><button class="settings-btn" onclick="navigate(\'#/sources\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-server" style="color:var(--accent);width:20px"></i> Stream Sources</button><button class="settings-btn" onclick="navigate(\'#/apikeys\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-key" style="color:var(--accent);width:20px"></i> API Keys</button></div><div class="settings-group"><div class="settings-group-title">Data</div><button class="settings-btn danger" onclick="if(confirm(\'Clear watchlist?\')){state.watchlist=[];storage.set(\'watchlist\',[]);showToast(\'Cleared\',\'info\');renderSettings()}"><i class="fas fa-trash"></i> Clear Watchlist</button><button class="settings-btn danger" onclick="if(confirm(\'Clear history?\')){clearHistory()}"><i class="fas fa-trash"></i> Clear History</button><button class="settings-btn" onclick="exportData()"><i class="fas fa-download"></i> Export Data</button><button class="settings-btn" onclick="document.getElementById(\'import-file\').click()"><i class="fas fa-upload"></i> Import Data</button><input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)"></div><div class="settings-about"><p><strong>StreamVault</strong> v3.2.0</p><p style="margin-top:8px">This product uses the TMDB API but is not endorsed by TMDB.</p><p style="margin-top:8px">Plugin system inspired by CloudStream</p><p style="margin-top:8px">Installable as PWA - Add to Home Screen</p></div></div>';
+      main.innerHTML = '<div class="settings-page page-enter"><div class="page-header"><h1 class="page-title">Settings</h1></div><div class="settings-group"><div class="settings-group-title">Appearance</div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-palette"></i><span class="settings-item-label">Theme</span></div><div style="display:flex;gap:8px">' + themeHTML + '</div></div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-circle"></i><span class="settings-item-label">Accent Color</span></div><div class="accent-colors">' + accentHTML + '</div></div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-gem"></i><span class="settings-item-label">Liquid Glass Effect</span></div><div class="toggle-switch ' + (state.liquidGlass ? 'active' : '') + '" onclick="toggleLiquidGlass()"></div></div></div><div class="settings-group"><div class="settings-group-title">Content</div><div class="settings-item"><div class="settings-item-left"><i class="fas fa-fire" style="color:#ff4444"></i><span class="settings-item-label">18+ Adult Content</span></div><div class="toggle-switch ' + (state.showAdult ? 'active' : '') + '" onclick="toggleAdult()"></div></div></div><div class="settings-group"><div class="settings-group-title">Quick Access</div><button class="settings-btn" onclick="navigate(\'#/plugins\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-puzzle-piece" style="color:var(--accent);width:20px"></i> Plugins (' + state.installedPlugins.length + ')</button><button class="settings-btn" onclick="navigate(\'#/sources\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-server" style="color:var(--accent);width:20px"></i> Stream Sources</button><button class="settings-btn" onclick="navigate(\'#/apikeys\')" style="display:flex;align-items:center;gap:12px;text-align:left"><i class="fas fa-key" style="color:var(--accent);width:20px"></i> API Keys</button></div><div class="settings-group"><div class="settings-group-title">Data</div><button class="settings-btn danger" onclick="if(confirm(\'Clear watchlist?\')){state.watchlist=[];storage.set(\'watchlist\',[]);showToast(\'Cleared\',\'info\');renderSettings()}"><i class="fas fa-trash"></i> Clear Watchlist</button><button class="settings-btn danger" onclick="if(confirm(\'Clear history?\')){clearHistory()}"><i class="fas fa-trash"></i> Clear History</button><button class="settings-btn" onclick="exportData()"><i class="fas fa-download"></i> Export Data</button><button class="settings-btn" onclick="document.getElementById(\'import-file\').click()"><i class="fas fa-upload"></i> Import Data</button><input type="file" id="import-file" accept=".json" style="display:none" onchange="importData(event)"></div><div class="settings-about"><p><strong>StreamVault</strong> v3.3.0</p><p style="margin-top:8px">This product uses the TMDB API but is not endorsed by TMDB.</p><p style="margin-top:8px">Plugin system inspired by CloudStream</p><p style="margin-top:8px">Installable as PWA - Add to Home Screen</p></div></div>';
     }
 
     function setTheme(theme) { state.theme = theme; storage.set('theme', theme); applyTheme(); renderSettings(); }
@@ -1485,67 +1332,20 @@
     function exportData() { var data = { watchlist: state.watchlist, history: state.history, recentSearches: state.recentSearches, pluginRepos: state.pluginRepos, installedPlugins: state.installedPlugins, sources: state.sources, apiKeys: state.apiKeys, showAdult: state.showAdult, liquidGlass: state.liquidGlass, theme: state.theme, accent: state.accent }; var blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' }); var url = URL.createObjectURL(blob); var a = document.createElement('a'); a.href = url; a.download = 'streamvault-data.json'; a.click(); URL.revokeObjectURL(url); showToast('Data exported!', 'success'); }
     function importData(event) { var file = event.target.files[0]; if (!file) return; var reader = new FileReader(); reader.onload = function(e) { try { var data = JSON.parse(e.target.result); if (data.watchlist) { state.watchlist = data.watchlist; storage.set('watchlist', data.watchlist); } if (data.history) { state.history = data.history; storage.set('history', data.history); } if (data.recentSearches) { state.recentSearches = data.recentSearches; storage.set('recentSearches', data.recentSearches); } if (data.pluginRepos) { state.pluginRepos = data.pluginRepos; storage.set('pluginRepos', data.pluginRepos); } if (data.installedPlugins) { state.installedPlugins = data.installedPlugins; storage.set('installedPlugins', data.installedPlugins); } if (data.sources) { state.sources = data.sources; storage.set('sources', data.sources); } if (data.apiKeys) { state.apiKeys = data.apiKeys; storage.set('apiKeys', data.apiKeys); } if (data.showAdult !== undefined) { state.showAdult = data.showAdult; storage.set('showAdult', state.showAdult); } if (data.liquidGlass !== undefined) { state.liquidGlass = data.liquidGlass; storage.set('liquidGlass', state.liquidGlass); } if (data.theme) { state.theme = data.theme; storage.set('theme', data.theme); } if (data.accent) { state.accent = data.accent; storage.set('accent', data.accent); } applyTheme(); showToast('Data imported!', 'success'); renderSettings(); } catch(err) { showToast('Invalid file', 'error'); } }; reader.readAsText(file); }
 
-    // PWA Install - FIXED
     var deferredPrompt = null;
-    window.addEventListener('beforeinstallprompt', function(e) {
-      e.preventDefault();
-      deferredPrompt = e;
-      document.getElementById('install-prompt').classList.add('show');
-    });
-    window.addEventListener('appinstalled', function() {
-      showToast('App installed successfully!', 'success');
-      document.getElementById('install-prompt').classList.remove('show');
-    });
-    function installApp() {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then(function(choiceResult) {
-          if (choiceResult.outcome === 'accepted') {
-            showToast('Installing...', 'success');
-          }
-          deferredPrompt = null;
-          document.getElementById('install-prompt').classList.remove('show');
-        });
-      } else {
-        showToast('Use browser menu to install (⋮ → Add to Home Screen)', 'info');
-      }
-    }
+    window.addEventListener('beforeinstallprompt', function(e) { e.preventDefault(); deferredPrompt = e; document.getElementById('install-prompt').classList.add('show'); });
+    window.addEventListener('appinstalled', function() { showToast('App installed!', 'success'); });
+    function installApp() { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt.userChoice.then(function() { document.getElementById('install-prompt').classList.remove('show'); deferredPrompt = null; }); } else { showToast('Use browser menu: ⋮ → Add to Home Screen', 'info'); } }
     function dismissInstall() { document.getElementById('install-prompt').classList.remove('show'); }
 
-    // Service Worker - FIXED
     if ('serviceWorker' in navigator) {
-      var swCode = 'self.addEventListener("install",function(e){self.skipWaiting()});self.addEventListener("activate",function(e){e.waitUntil(self.clients.claim())});self.addEventListener("fetch",function(e){if(e.request.method==="GET"){e.respondWith(caches.open("streamvault-v4").then(function(cache){return cache.match(e.request).then(function(response){return response||fetch(e.request).then(function(r){if(r&&r.status===200)cache.put(e.request,r.clone());return r}).catch(function(){return response})})}))}});';
+      var swCode = 'self.addEventListener("install",function(e){self.skipWaiting()});self.addEventListener("activate",function(e){e.waitUntil(self.clients.claim())});self.addEventListener("fetch",function(e){if(e.request.method==="GET"){e.respondWith(caches.open("streamvault-v5").then(function(cache){return cache.match(e.request).then(function(response){return response||fetch(e.request).then(function(r){if(r&&r.status===200)cache.put(e.request,r.clone());return r}).catch(function(){return response})})}))}});';
       var swBlob = new Blob([swCode], { type: 'application/javascript' });
       var swUrl = URL.createObjectURL(swBlob);
-      navigator.serviceWorker.register(swUrl).then(function(reg) {
-        console.log('SW registered');
-      }).catch(function(err) {
-        console.log('SW registration failed:', err);
-      });
+      navigator.serviceWorker.register(swUrl).catch(function() {});
     }
 
-    // Create manifest dynamically - FIXED
-    var manifest = {
-      name: 'StreamVault',
-      short_name: 'StreamVault',
-      start_url: './',
-      display: 'standalone',
-      background_color: '#0a0a0f',
-      theme_color: '#e50914',
-      orientation: 'any',
-      icons: [
-        {
-          src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect fill="%230a0a0f" width="192" height="192" rx="40"/><text x="96" y="130" text-anchor="middle" fill="%23e50914" font-size="80" font-weight="800" font-family="Arial">SV</text></svg>',
-          sizes: '192x192',
-          type: 'image/svg+xml'
-        },
-        {
-          src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect fill="%230a0a0f" width="512" height="512" rx="100"/><text x="256" y="340" text-anchor="middle" fill="%23e50914" font-size="200" font-weight="800" font-family="Arial">SV</text></svg>',
-          sizes: '512x512',
-          type: 'image/svg+xml'
-        }
-      ]
-    };
+    var manifest = { name: 'StreamVault', short_name: 'StreamVault', start_url: './', display: 'standalone', background_color: '#0a0a0f', theme_color: '#e50914', orientation: 'any', icons: [{ src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192"><rect fill="%230a0a0f" width="192" height="192" rx="40"/><text x="96" y="130" text-anchor="middle" fill="%23e50914" font-size="80" font-weight="800" font-family="Arial">SV</text></svg>', sizes: '192x192', type: 'image/svg+xml' }, { src: 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><rect fill="%230a0a0f" width="512" height="512" rx="100"/><text x="256" y="340" text-anchor="middle" fill="%23e50914" font-size="200" font-weight="800" font-family="Arial">SV</text></svg>', sizes: '512x512', type: 'image/svg+xml' }] };
     var manifestBlob = new Blob([JSON.stringify(manifest)], { type: 'application/json' });
     var manifestUrl = URL.createObjectURL(manifestBlob);
     var manifestLink = document.createElement('link');
